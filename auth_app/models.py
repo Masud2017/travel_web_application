@@ -61,6 +61,7 @@ class Orders(models.Model):
     is_package = models.BooleanField(default = False)
     packages = models.ManyToManyField(Packages)
     custom_packages = models.ManyToManyField(CustomPackages)
+    is_paid =  models.BooleanField(default = False)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
