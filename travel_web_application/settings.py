@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'auth_app',
-    "travel_manager_app"
+    "travel_manager_app",
+    "payment_app"
 ]
 
 MIDDLEWARE = [

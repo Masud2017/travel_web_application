@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 
-# Create your views here.
+def checkout(request):
+    return HttpResponse("Payment is being processing please wait for it ....")
+    # return HttpResponseRedirect("/")
