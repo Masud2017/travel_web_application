@@ -25,7 +25,27 @@
     </style>
     </head>    
     <body>
-        <nav class="navbar navbar-expand-sm shadow-sm">
+        {% if user.is_authenticated %}
+          <nav class="navbar navbar-expand-sm shadow-sm">
+            <div class="container-fluid d-flex justify-content-between">
+              <a href = "/" style = "text-decoration: none;"><span>Navbar</span></a>
+              <ul class="navbar-nav">
+                <div class="dropdown">
+                  <a class="btn border-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src = {{user.usermodelextended.image_url}}/>
+                    {{user.first_name}}
+                  </a>
+                
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">Setting</a></li>
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                  </ul>
+                </div>
+              </ul>
+            </div>
+          </nav>
+        {% else %}
+          <nav class="navbar navbar-expand-sm shadow-sm">
             <div class="container-fluid d-flex justify-content-between">
               <a href = "/" style = "text-decoration: none;"><span>Navbar</span></a>
               <ul class="navbar-nav">
@@ -38,6 +58,7 @@
               </ul>
             </div>
           </nav>
+        {% endif %}
 
         {% block main %}
         {% endblock main %}

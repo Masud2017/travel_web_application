@@ -3,10 +3,12 @@
 {% block main %}
 
 <div class = "d-flex justify-content-center align-items-center" style = "height: 100vh;">
-    <form style = "width : 20rem" class = "shadow-sm p-sm-2 text-center" method = "POST" action = "#">
+    <form style = "width : 20rem" class = "shadow-sm p-sm-2 text-center" method = "POST" action = "{% url 'register' %}" enctype="multipart/form-data">
+        {% csrf_token %}
         <input type = "text" placeholder="Enter your full name" class = "form-control" name = "name"/>
         <input type = "email" placeholder="Enter your user name" class = "form-control mt-sm-2" name = "username"/>
         <input type = "password" placeholder="Enter your password" class = "form-control mt-sm-2" name = "password"/>
+        <input type = "file" class  = "form-control mt-sm-4" name = "image"/>
         <input type = "submit" class = "btn btn-danger mt-sm-4 form-control" value= "Signup"/>
     </form>
 </div>
