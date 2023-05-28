@@ -78,6 +78,8 @@ class Flights(models.Model):
     updated_at = models.DateTimeField(auto_now = True,null = True, blank = True)
     price = models.IntegerField(default = 0)
     stock = models.IntegerField(default = 0)
+    description = models.CharField(max_length=500,default = None,blank = True,null = True)
+
 
     class Meta:
         verbose_name_plural = "Flights"
@@ -90,10 +92,16 @@ class Activities(models.Model):
         verbose_name_plural = "Activities"
 
 class Hotels(models.Model):
+    user_model_exnteded = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None, null = True, blank = True)
+
     room_count = models.IntegerField()
-    price = models.IntegerField()
     room_size = models.IntegerField()
     product_image_url = models.CharField(max_length = 200,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
+    description = models.CharField(max_length=500,default = None,blank = True,null = True)
+    price = models.IntegerField(default = 0)
+    stock = models.IntegerField(default = 0)
+    created_at = models.DateTimeField(auto_now_add = True,null = True, blank = True)
+    updated_at = models.DateTimeField(auto_now = True,null = True, blank = True)
 
     class Meta:
         verbose_name_plural = "Hotels"

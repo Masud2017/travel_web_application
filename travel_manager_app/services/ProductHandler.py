@@ -1,12 +1,16 @@
-from auth_app.models import Flights,UserModelExtended
+from auth_app.models import Flights,UserModelExtended,Hotels,Activities
 from django.contrib.auth.models import User
 from django.core.exceptions import EmptyResultSet,ObjectDoesNotExist
+import logging
 
 class ProductHandler:
     def __init__(self,current_user):
         self.current_user = current_user
 
     class FlightHandler:
+        def __init__(self):
+            pass
+
         def add_flight(self,flight_from,flight_to,price,flight_image,stock):
             try:
                 Flights.objects.create(
@@ -62,4 +66,11 @@ class ProductHandler:
             pass
         
         def add_hotels(self):
-            pass
+            try:
+                Hotels.objects.create(
+                    
+                )
+                return True
+            except Exception as e:
+                print(e)
+                return False
