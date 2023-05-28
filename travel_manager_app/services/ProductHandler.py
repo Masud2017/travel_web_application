@@ -1,7 +1,6 @@
 from auth_app.models import Flights,UserModelExtended,Hotels,Activities
 from django.contrib.auth.models import User
 from django.core.exceptions import EmptyResultSet,ObjectDoesNotExist
-import logging
 
 class ProductHandler:
     def __init__(self,current_user):
@@ -125,16 +124,14 @@ class ProductHandler:
         def __init__(self):
             pass
 
-        def add_hotel(self,count,size,description,image,price,stock):
+        def add_activity(self,name,description,price,image):
             try:
-                Hotels.objects.create(
+                Activities.objects.create(
                     user_model_extended = self.current_user,
-                    room_count = count,
-                    room_size = size,
+                    name = name,
                     description = description,
                     product_image_url = image,
                     price = price,
-                    stock = stock
                 )
 
                 return True
@@ -142,39 +139,37 @@ class ProductHandler:
                 print(e)
                 return False
             
-        def change_hotel(self,id,count,size,description,image,price,stock):
+        def change_activity(self,id,name,description,price,image):
             try:
-                hotel = Hotels.objects.get(id = id)
-            
-                hotel.room_count = count
-                hotel.room_size = size
-                hotel.product_image_url = image
-                hotel.description = description
-                hotel.price = price
-                hotel.stock = stock
+                activity = Activities.objects.get(id = id)
 
-                hotel.save()
+                activity.name = name            
+                activity.product_image_url = image
+                activity.description = description
+                activity.price = price
+
+                activity.save()
 
                 return True
             except Exception as e:
                 print(e)
                 return False
         
-        def get_hotel_by_id(self,hotel_id):
+        def get_activity_by_id(self,hotel_id):
             try:
-                hotel = Hotels.objects.get(id = hotel_id)
-                return hotel
+                activity = Activities.objects.get(id = hotel_id)
+                return activity
             except (ObjectDoesNotExist , EmptyResultSet) as e:
                 print(e)
                 return None
             
-        def get_all_hotels(self):
-            return Hotels.objects.all()
+        def get_all_acitivities(self):
+            return Activities.objects.all()
 
-        def delete_hotel(self,id):
+        def delete_activity(self,id):
             try:
-                hotel = Hotels.objects.get(id = id)
-                hotel.delete()
+                activity = Activities.objects.get(id = id)
+                activity.delete()
 
                 return True
             except Exception as e:
