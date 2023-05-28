@@ -6,8 +6,25 @@ from django.contrib.auth.models import Group,Permission
 # creation of role groups
 # user group
 user_group, created = Group.objects.get_or_create(name='user')
-user_group.permissions.add(Permission.objects.get(codename = "can_create_custom_packages"))
-user_group.permissions.add(Permission.objects.get(codename = "can_create_flights"))
+user_group.permissions.add(Permission.objects.get(codename = "add_orders"))
+user_group.permissions.add(Permission.objects.get(codename = "change_orders"))
+user_group.permissions.add(Permission.objects.get(codename = "delete_orders"))
+user_group.permissions.add(Permission.objects.get(codename = "view_orders"))
+user_group.permissions.add(Permission.objects.get(codename = "add_cancellations"))
+user_group.permissions.add(Permission.objects.get(codename = "change_cancellations"))
+user_group.permissions.add(Permission.objects.get(codename = "delete_cancellations"))
+user_group.permissions.add(Permission.objects.get(codename = "view_cancellations"))
+user_group.permissions.add(Permission.objects.get(codename = "view_flights"))
+user_group.permissions.add(Permission.objects.get(codename = "view_hotels"))
+user_group.permissions.add(Permission.objects.get(codename = "view_activities"))
+user_group.permissions.add(Permission.objects.get(codename = "view_packages"))
+user_group.permissions.add(Permission.objects.get(codename = "add_custompackages"))
+user_group.permissions.add(Permission.objects.get(codename = "change_custompackages"))
+user_group.permissions.add(Permission.objects.get(codename = "delete_custompackages"))
+user_group.permissions.add(Permission.objects.get(codename = "view_custompackages"))
+
+
+# user_group.permissions.add(Permission.objects.get(codename = "can_create_flights"))
 
 # agent group
 agent_group, created = Group.objects.get_or_create(name='agent')
@@ -120,4 +137,10 @@ class Cancellations(models.Model):
         verbose_name_plural = "Cancellations"
         
 
+class Histories(models.Model):
+    user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE)
+    product_id = models.IntegerField(default = None,null = True, blank = True) # product can be anything (hotels, activities,flights,packages,custom packages)
+    description = models.CharField(max_length = 255,default = "No description available",null = True, blank = True)
 
+    class Meta:
+        verbose_name_plural = "Histories"
