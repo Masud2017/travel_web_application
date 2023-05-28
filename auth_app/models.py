@@ -116,6 +116,9 @@ class Packages(models.Model):
     flight = models.ForeignKey(Flights,on_delete=models.CASCADE)
     activities = models.ManyToManyField(Activities)
     hotel = models.ForeignKey(Hotels,on_delete=models.CASCADE)
+    
+    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
+    price = models.IntegerField(default = 0)
 
     class Meta:
         verbose_name_plural = "Packages"
