@@ -30,7 +30,8 @@ user_group.permissions.add(Permission.objects.get(codename = "view_histories"))
 
 # agent group
 agent_group, created = Group.objects.get_or_create(name='agent')
-agent_group.permissions.add()
+# agent_group.permissions.add(Permission.objects.get(codename = ""))
+
 
 # super user group
 superuser_group, created = Group.objects.get_or_create(name='superuser')
@@ -125,6 +126,12 @@ class Orders(models.Model):
 
     class Meta:
         verbose_name_plural = "Orders"
+        permissions = (
+            ("add_orders_for_user", "add orders for user"),
+            ("change_orders_for_user","change orders for user"),
+            ("delete_orders_for_user","delete orders for user"),
+            ("view_orders_for_user", "view orders for user")
+        )
 
 
 class Cancellations(models.Model):
