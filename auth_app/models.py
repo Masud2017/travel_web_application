@@ -22,7 +22,9 @@ user_group.permissions.add(Permission.objects.get(codename = "add_custompackages
 user_group.permissions.add(Permission.objects.get(codename = "change_custompackages"))
 user_group.permissions.add(Permission.objects.get(codename = "delete_custompackages"))
 user_group.permissions.add(Permission.objects.get(codename = "view_custompackages"))
-
+user_group.permissions.add(Permission.objects.get(codename = "add_histories"))
+user_group.permissions.add(Permission.objects.get(codename = "delete_histories"))
+user_group.permissions.add(Permission.objects.get(codename = "view_histories"))
 
 # user_group.permissions.add(Permission.objects.get(codename = "can_create_flights"))
 
