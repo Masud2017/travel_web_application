@@ -1,15 +1,24 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group,Permission
 
 # creation of role groups
+# user group
 user_group, created = Group.objects.get_or_create(name='user')
+user_group.permissions.add(Permission.objects.get(codename = "can_create_custom_packages"))
+user_group.permissions.add(Permission.objects.get(codename = "can_create_flights"))
+
+# agent group
 agent_group, created = Group.objects.get_or_create(name='agent')
+agent_group.permissions.add()
+
+# super user group
 superuser_group, created = Group.objects.get_or_create(name='superuser')
+agent_group.permissions.add()
 
 
-
+# Assiging database models for django orm
 class Roles(models.Model):
     role_type = models.CharField(max_length=100,default = "")
     role = models.IntegerField()
@@ -36,30 +45,6 @@ class UserModelExtended(models.Model):
     class Meta:
         verbose_name_plural = "UserModelExtended"
         permissions = (
-            ("can_create_hotels","User that has this permission enable can create hotel as individual product"),
-            ("can_create_flights","User that has this permission enable can create flight as individual product"),
-            ("can_create_activities","User that has this permission enable can create activities as individual product"),
-            ("can_create_packages","User that has this permission enable can create package as individual product"),
-            ("can_create_custom_packages","User that has this permission enable can create custom package as individual product"),
-            
-            ("can_edit_hotels","User that has this permission enable can edit hotel as individual product"),
-            ("can_edit_flights","User that has this permission enable can edit flight as individual product"),
-            ("can_edit_activities","User that has this permission enable can edit activity as individual product"),
-            ("can_edit_packages","User that has this permission enable can edit package as individual product"),
-            ("can_edit_custom_packages","User that has this permission enable can edit custom package as individual product"),
-            
-            ("can_delete_hotels","User that has this permission enable can delete hotel as individual product"),
-            ("can_delete_flights","User that has this permission enable can delete flight as individual product"),
-            ("can_delete_activities","User that has this permission enable can delete activity as individual product"),
-            ("can_delete_packages","User that has this permission enable can delete package as individual product"),
-            ("can_delete_custom_packages","User that has this permission enable can delete custom package as individual product"),
-
-            ("can_remove_user","User that has this permission enable can remove any user except superuser"),
-            ("can_create_user","User that has this permission enable can create new account an user (both agent and user)"),
-            ("can_cancel_order","User that has this permission enable can cancel order based on user request"),
-            ("can_place_order","User that has this permission enable can place new order"),
-            ("can_create_new_permission", "User that has this permission enabled can create new permissions for a specific role type"),
-            ("can_create_new_role", "User that has this permission enabled can create new role with permissions"),
             ("can_use_account", "User need this permission enabled to be able to use his/her account"),
         )
 
