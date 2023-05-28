@@ -43,7 +43,7 @@ def register(request):
         new_user.save()
 
         # adding user_profile image url into the extended user model
-        user_model_extended = UserModelExtended(user = new_user,image_url = util.save_image_to_disk(profile_image))
+        user_model_extended = UserModelExtended.objects.create(user = new_user,image_url = util.save_image_to_disk(profile_image),role = util.get_role_by_role_string("user"))
         user_model_extended.save()
         
         print("User not found")

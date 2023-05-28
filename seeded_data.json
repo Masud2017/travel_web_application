@@ -1,0 +1,27 @@
+[
+    {
+        "model":"auth_app.Roles",
+        "pk":1,
+        "fields": {
+            "role_type":"user",
+            "role":0
+        }
+    },
+    {
+        "model":"auth_app.Roles",
+        "pk":2,
+        "fields": {
+            "role_type":"agent",
+            "role":1
+        }
+    },
+    {
+        "model":"auth_app.Roles",
+        "pk":3,
+        "fields": {
+            "role_type":"superuser",
+            "role":2
+        }
+    }
+    
+]
