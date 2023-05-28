@@ -87,7 +87,9 @@ class Flights(models.Model):
 class Activities(models.Model):
     user_model_exnteded = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None, null = True, blank = True)
 
-    activity_type = models.IntegerField()
+    name = models.CharField(max_length=200,default = None, blank = True, null = True)
+    description = models.CharField(max_length=500,default = None, blank = True, null = True)
+    price = models.IntegerField(default = 0)
     product_image_url = models.CharField(max_length = 200,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
 
     class Meta:

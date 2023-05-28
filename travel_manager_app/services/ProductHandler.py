@@ -120,3 +120,63 @@ class ProductHandler:
             except Exception as e:
                 print(e)
                 return False
+            
+    class ActivityHandler:
+        def __init__(self):
+            pass
+
+        def add_hotel(self,count,size,description,image,price,stock):
+            try:
+                Hotels.objects.create(
+                    user_model_extended = self.current_user,
+                    room_count = count,
+                    room_size = size,
+                    description = description,
+                    product_image_url = image,
+                    price = price,
+                    stock = stock
+                )
+
+                return True
+            except Exception as e:
+                print(e)
+                return False
+            
+        def change_hotel(self,id,count,size,description,image,price,stock):
+            try:
+                hotel = Hotels.objects.get(id = id)
+            
+                hotel.room_count = count
+                hotel.room_size = size
+                hotel.product_image_url = image
+                hotel.description = description
+                hotel.price = price
+                hotel.stock = stock
+
+                hotel.save()
+
+                return True
+            except Exception as e:
+                print(e)
+                return False
+        
+        def get_hotel_by_id(self,hotel_id):
+            try:
+                hotel = Hotels.objects.get(id = hotel_id)
+                return hotel
+            except (ObjectDoesNotExist , EmptyResultSet) as e:
+                print(e)
+                return None
+            
+        def get_all_hotels(self):
+            return Hotels.objects.all()
+
+        def delete_hotel(self,id):
+            try:
+                hotel = Hotels.objects.get(id = id)
+                hotel.delete()
+
+                return True
+            except Exception as e:
+                print(e)
+                return False
