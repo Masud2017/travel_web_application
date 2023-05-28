@@ -116,7 +116,7 @@ class Packages(models.Model):
     flight = models.ForeignKey(Flights,on_delete=models.CASCADE)
     activities = models.ManyToManyField(Activities)
     hotel = models.ForeignKey(Hotels,on_delete=models.CASCADE)
-    
+
     product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
     price = models.IntegerField(default = 0)
 
@@ -124,11 +124,14 @@ class Packages(models.Model):
         verbose_name_plural = "Packages"
 
 class CustomPackages(models.Model):
-    user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None, null = True)
-
+    user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None)
+    
     flight = models.ForeignKey(Flights,on_delete=models.CASCADE)
-    activity = models.ForeignKey(Activities,on_delete=models.CASCADE)
+    activities = models.ManyToManyField(Activities)
     hotel = models.ForeignKey(Hotels,on_delete=models.CASCADE)
+    
+    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
+    price = models.IntegerField(default = 0)
 
     class Meta:
         verbose_name_plural = "CustomPackages"
