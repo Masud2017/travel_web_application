@@ -76,6 +76,7 @@ class Flights(models.Model):
     product_image_url = models.CharField(max_length = 200,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
     created_at = models.DateTimeField(auto_now_add = True,null = True, blank = True)
     updated_at = models.DateTimeField(auto_now = True,null = True, blank = True)
+    price = models.IntegerField(default = 0)
 
     class Meta:
         verbose_name_plural = "Flights"
