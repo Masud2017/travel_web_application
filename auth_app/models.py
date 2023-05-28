@@ -30,6 +30,10 @@ user_group.permissions.add(Permission.objects.get(codename = "view_histories"))
 
 # agent group
 agent_group, created = Group.objects.get_or_create(name='agent')
+agent_group.permissions.add(Permission.objects.get(codename = "add_flights"))
+agent_group.permissions.add(Permission.objects.get(codename = "view_flights"))
+agent_group.permissions.add(Permission.objects.get(codename = "change_flights"))
+agent_group.permissions.add(Permission.objects.get(codename = "delete_flights"))
 agent_group.permissions.add(Permission.objects.get(codename = "add_orders_for_user"))
 agent_group.permissions.add(Permission.objects.get(codename = "change_orders_for_user"))
 agent_group.permissions.add(Permission.objects.get(codename = "delete_orders_for_user"))
@@ -64,6 +68,8 @@ class UserModelExtended(models.Model):
         )
 
 class Flights(models.Model):
+    user_model_exnteded = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None, null = True, blank = True)
+
     from_dst = models.CharField(max_length=200)
     to_dst = models.CharField(max_length=200)
     travel_date = models.DateField()
