@@ -30,13 +30,18 @@ user_group.permissions.add(Permission.objects.get(codename = "view_histories"))
 
 # agent group
 agent_group, created = Group.objects.get_or_create(name='agent')
-# agent_group.permissions.add(Permission.objects.get(codename = ""))
-
+agent_group.permissions.add(Permission.objects.get(codename = "add_orders_for_user"))
+agent_group.permissions.add(Permission.objects.get(codename = "change_orders_for_user"))
+agent_group.permissions.add(Permission.objects.get(codename = "delete_orders_for_user"))
+agent_group.permissions.add(Permission.objects.get(codename = "view_orders_for_user"))
+agent_group.permissions.add(Permission.objects.get(codename = "add_cancellations_for_user"))
+agent_group.permissions.add(Permission.objects.get(codename = "view_cancellations_for_user"))
+agent_group.permissions.add(Permission.objects.get(codename = "change_cancellations_for_user"))
+agent_group.permissions.add(Permission.objects.get(codename = "delete_cancellations_for_user"))
 
 # super user group
 superuser_group, created = Group.objects.get_or_create(name='superuser')
-agent_group.permissions.add()
-
+# we need this permission thing while we are going to work with agent handling and security stuff
 
 # Assiging database models for django orm
 class Roles(models.Model):
@@ -47,18 +52,8 @@ class Roles(models.Model):
         verbose_name_plural = "Roles"
 
 class UserModelExtended(models.Model):
-    # USER = 1
-    # AGENT = 2
-    # SUPERUSER =3
-      
-    # ROLE_CHOICES = (
-    #     (USER, 'User'),
-    #     (AGENT, 'Agent'),
-    #     (SUPERUSER, 'Superuser'))
-
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     role = models.ForeignKey(Roles,on_delete= models.CASCADE,blank=True,null = True) # Many to one relationship with the Roles model
-    # role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
     image_url = models.CharField(max_length=100,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
 
@@ -144,6 +139,12 @@ class Cancellations(models.Model):
 
     class Meta:
         verbose_name_plural = "Cancellations"
+        permissions = (
+            ("add_cancellations_for_user","cancel for user"),
+            ("view_cancellations_for_user","view cancellations for user"),
+            ("delete_cancellations_for_user","delete cancellations for user"),
+            ("change_cancellations_for_user","change cancellations for user"),
+        )
         
 
 class Histories(models.Model):
