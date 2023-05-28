@@ -85,6 +85,8 @@ class Flights(models.Model):
         verbose_name_plural = "Flights"
 
 class Activities(models.Model):
+    user_model_exnteded = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None, null = True, blank = True)
+
     activity_type = models.IntegerField()
     product_image_url = models.CharField(max_length = 200,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
 
@@ -110,7 +112,7 @@ class Packages(models.Model):
     user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None)
     
     flight = models.ForeignKey(Flights,on_delete=models.CASCADE)
-    activity = models.ForeignKey(Activities,on_delete=models.CASCADE)
+    activities = models.ManyToManyField(Activities)
     hotel = models.ForeignKey(Hotels,on_delete=models.CASCADE)
 
     class Meta:
