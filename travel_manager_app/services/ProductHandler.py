@@ -1,21 +1,40 @@
 from auth_app.models import Flights,UserModelExtended,Hotels,Activities
 from django.contrib.auth.models import User
 from django.core.exceptions import EmptyResultSet,ObjectDoesNotExist
+import stripe
 
 class ProductHandler:
     def __init__(self,current_user):
         self.current_user = current_user
+        
 
     class FlightHandler:
-        def __init__(self):
-            pass
+        def __init__(self,current_user):
+            self.current_user = current_user
 
-        def add_flight(self,flight_from,flight_to,price,flight_image,stock):
+        def add_flight(self,name,flight_from,flight_to,price,flight_image,stock,description):
             try:
+                stripe.api_key = "sk_test_PoBT6YH9zQk0e1CmaBBvwE9T00DzILwK1R"
+                product = stripe.Product.create(
+                    name = "Flight name : "+name +' | from : '+flight_from + " | to : "+flight_to
+                )
+
+                price = stripe.Price.create(
+                    unit_amount=2000,
+                    currency="usd",
+                    recurring={"interval": "month"},
+                    product=product.id,
+                )
+
+                
+                print("printing the value of price : ",product.id)
                 Flights.objects.create(
-                user_model_exnteded = self.current_user.usermodelextended
-                ,from_dst = flight_from, to_dst = flight_to
-                ,product_image_url = flight_image,price = price,stock = stock)
+                    user_model_exnteded = self.current_user.usermodelextended
+                    ,name = name
+                    ,from_dst = flight_from, to_dst = flight_to
+                    ,product_image_url = flight_image,price = price,stock = stock
+                    ,price_id = price.id
+                    ,product_id = product.id,description = description)
 
                 return True
             except Exception as e:
@@ -175,3 +194,8 @@ class ProductHandler:
             except Exception as e:
                 print(e)
                 return False
+            
+
+if __name__ == "__main__":
+    handler = ProductHandler.FlightHandler()
+    handler.add_flight(name= "Test flight", flight_from= "Canada",flight_to= "America",price=100,flight_image="",stock=1)

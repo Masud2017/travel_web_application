@@ -70,6 +70,7 @@ class UserModelExtended(models.Model):
 class Flights(models.Model):
     user_model_exnteded = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None, null = True, blank = True)
 
+    name = models.CharField(max_length=100,default = None, null = True, blank = True)
     from_dst = models.CharField(max_length=200)
     to_dst = models.CharField(max_length=200)
     travel_date = models.DateTimeField(default = None,null = True, blank = True)
@@ -79,6 +80,7 @@ class Flights(models.Model):
     price = models.IntegerField(default = 0)
     stock = models.IntegerField(default = 0)
     description = models.CharField(max_length=500,default = None,blank = True,null = True)
+    
     product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
     price_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the price id from stripe payment gateway
 
@@ -93,6 +95,7 @@ class Activities(models.Model):
     description = models.CharField(max_length=500,default = None, blank = True, null = True)
     price = models.IntegerField(default = 0)
     product_image_url = models.CharField(max_length = 200,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
+    
     product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
     price_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the price id from stripe payment gateway
 
