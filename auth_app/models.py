@@ -79,6 +79,8 @@ class Flights(models.Model):
     price = models.IntegerField(default = 0)
     stock = models.IntegerField(default = 0)
     description = models.CharField(max_length=500,default = None,blank = True,null = True)
+    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
+    price_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the price id from stripe payment gateway
 
 
     class Meta:
@@ -91,6 +93,8 @@ class Activities(models.Model):
     description = models.CharField(max_length=500,default = None, blank = True, null = True)
     price = models.IntegerField(default = 0)
     product_image_url = models.CharField(max_length = 200,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
+    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
+    price_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the price id from stripe payment gateway
 
     class Meta:
         verbose_name_plural = "Activities"
@@ -107,6 +111,10 @@ class Hotels(models.Model):
     created_at = models.DateTimeField(auto_now_add = True,null = True, blank = True)
     updated_at = models.DateTimeField(auto_now = True,null = True, blank = True)
 
+    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
+    price_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the price id from stripe payment gateway
+
+
     class Meta:
         verbose_name_plural = "Hotels"
 
@@ -119,7 +127,6 @@ class Packages(models.Model):
     hotel = models.ForeignKey(Hotels,on_delete=models.CASCADE)
     hotel_qty = models.IntegerField(default = 1)
 
-    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
     price = models.IntegerField(default = 0)
 
     class Meta:
@@ -134,7 +141,6 @@ class CustomPackages(models.Model):
     hotel = models.ForeignKey(Hotels,on_delete=models.CASCADE)
     hotel_qty = models.IntegerField(default = 1)
     
-    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
     price = models.IntegerField(default = 0)
 
     class Meta:
