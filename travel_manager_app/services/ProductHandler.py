@@ -2,19 +2,21 @@ from auth_app.models import Flights,UserModelExtended,Hotels,Activities
 from django.contrib.auth.models import User
 from django.core.exceptions import EmptyResultSet,ObjectDoesNotExist
 import stripe
+from django.conf import settings
 
 class ProductHandler:
     def __init__(self,current_user):
         self.current_user = current_user
-        
+        print("environment variable printin : ",settings.STRIPE_API_KEY)
 
     class FlightHandler:
         def __init__(self,current_user):
             self.current_user = current_user
+            stripe.api_key = "sk_test_PoBT6YH9zQk0e1CmaBBvwE9T00DzILwK1R"
+            
 
         def add_flight(self,name,flight_from,flight_to,price,flight_image,stock,description):
             try:
-                stripe.api_key = "sk_test_PoBT6YH9zQk0e1CmaBBvwE9T00DzILwK1R"
                 product = stripe.Product.create(
                     name = "Flight name : "+name +' | from : '+flight_from + " | to : "+flight_to
                 )
@@ -25,9 +27,7 @@ class ProductHandler:
                     recurring={"interval": "month"},
                     product=product.id,
                 )
-
                 
-                print("printing the value of price : ",product.id)
                 Flights.objects.create(
                     user_model_exnteded = self.current_user.usermodelextended
                     ,name = name

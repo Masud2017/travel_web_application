@@ -138,3 +138,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'static/media/')
 
 LOGIN_REDIRECT_URL="/login"
 LOGOUT_REDIRECT_URL="/login"
+
+
+# env variabels 
+# remember don't forget to use .env file
+from dotenv import load_dotenv
+
+load_dotenv()
+
+STRIPE_API_KEY = os.getenv("stripe_api_key")
