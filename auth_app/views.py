@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,logout,login
 from django.contrib.auth.models import User
@@ -7,10 +7,16 @@ from django.contrib.auth.decorators import login_required
 from . import util
 from .models import UserModelExtended,Roles
 
+from django.contrib.auth.models import Group
+from .models import Hotels
+
 # Create your views here.
 
 def index(request):
-    return render(request,"homepage.html")
+    hotels = Hotels.objects.all()
+    if request.user.is_authenticated:
+        return render(request,"homepage.html",{"hotels":hotels})
+    return render(request,"homepage.html",{"hotels":[]})
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -26,9 +32,15 @@ def signup(request):
 def register(request):
     username = request.POST["username"]
     password = request.POST["password"]
+    retype_password = request.POST["re_pass"]
     name = request.POST["name"]
     profile_image = request.FILES["image"]
+    user_type = request.POST["user_type"]
 
+    if password != retype_password:
+        messages.add_message(request,messages.INFO, "Password is not matched !!")
+        return HttpResponseRedirect("/signup")
+    
     
     
     # with open("temp_image","w") as f:
@@ -42,16 +54,28 @@ def register(request):
         new_user.set_password(password)
         new_user.save()
 
-        # adding user_profile image url into the extended user model
-        user_model_extended = UserModelExtended.objects.create(user = new_user,image_url = util.save_image_to_disk(profile_image),role = util.get_role_by_role_string("user"))
-        user_model_extended.save()
+        
+
+        # assign user to a group
+        if user_type == "agent":
+            # adding user_profile image url into the extended user model
+            user_model_extended = UserModelExtended.objects.create(user = new_user,image_url = util.save_image_to_disk(profile_image),role = util.get_role_by_role_string("agent"))
+            user_model_extended.save()
+
+            agent_group, created = Group.objects.get_or_create(name='agent')
+            new_user.groups.add(agent_group)
+        elif user_type == "user":
+            # adding user_profile image url into the extended user model
+            user_model_extended = UserModelExtended.objects.create(user = new_user,image_url = util.save_image_to_disk(profile_image),role = util.get_role_by_role_string("user"))
+            user_model_extended.save()
+
+            user_group, created = Group.objects.get_or_create(name='user')
+            new_user.groups.add(user_group)
+
         
         print("User not found")
-    # if user != None:
-    #     print("User is not null")
 
-
-    return HttpResponse("hello world")
+    return HttpResponseRedirect("/signup")
 def authentication(request):
     username = request.POST["username"]
     password = request.POST["password"]

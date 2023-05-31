@@ -34,6 +34,10 @@ agent_group.permissions.add(Permission.objects.get(codename = "add_flights"))
 agent_group.permissions.add(Permission.objects.get(codename = "view_flights"))
 agent_group.permissions.add(Permission.objects.get(codename = "change_flights"))
 agent_group.permissions.add(Permission.objects.get(codename = "delete_flights"))
+agent_group.permissions.add(Permission.objects.get(codename = "add_hotels"))
+agent_group.permissions.add(Permission.objects.get(codename = "view_hotels"))
+agent_group.permissions.add(Permission.objects.get(codename = "change_hotels"))
+agent_group.permissions.add(Permission.objects.get(codename = "delete_hotels"))
 agent_group.permissions.add(Permission.objects.get(codename = "add_orders_for_user"))
 agent_group.permissions.add(Permission.objects.get(codename = "change_orders_for_user"))
 agent_group.permissions.add(Permission.objects.get(codename = "delete_orders_for_user"))
@@ -80,10 +84,6 @@ class Flights(models.Model):
     price = models.IntegerField(default = 0)
     stock = models.IntegerField(default = 0)
     description = models.CharField(max_length=500,default = None,blank = True,null = True)
-    
-    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
-    price_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the price id from stripe payment gateway
-
 
     class Meta:
         verbose_name_plural = "Flights"
@@ -95,9 +95,6 @@ class Activities(models.Model):
     description = models.CharField(max_length=500,default = None, blank = True, null = True)
     price = models.IntegerField(default = 0)
     product_image_url = models.CharField(max_length = 200,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
-    
-    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
-    price_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the price id from stripe payment gateway
 
     class Meta:
         verbose_name_plural = "Activities"
@@ -105,18 +102,17 @@ class Activities(models.Model):
 class Hotels(models.Model):
     user_model_exnteded = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None, null = True, blank = True)
 
+    name = models.CharField(max_length=255,null = True, blank = True,default = None)
     room_count = models.IntegerField()
     room_size = models.IntegerField()
     product_image_url = models.CharField(max_length = 200,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
     description = models.CharField(max_length=500,default = None,blank = True,null = True)
+    title = models.CharField(max_length=250,default = None,blank = True,null = True)
     price = models.IntegerField(default = 0)
     stock = models.IntegerField(default = 0)
+    address = models.CharField(max_length=200,null = True,default = None,blank = True)
     created_at = models.DateTimeField(auto_now_add = True,null = True, blank = True)
     updated_at = models.DateTimeField(auto_now = True,null = True, blank = True)
-
-    product_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the product id from stripe payment gateway
-    price_id = models.CharField(max_length=500,default = None, null = True, blank = True) # this will be the price id from stripe payment gateway
-
 
     class Meta:
         verbose_name_plural = "Hotels"
@@ -157,6 +153,7 @@ class Orders(models.Model):
     packages = models.ManyToManyField(Packages)
     custom_packages = models.ManyToManyField(CustomPackages)
     is_paid =  models.BooleanField(default = False)
+    payment_id = models.CharField(max_length=200,default = None, null= True,blank = True) # this will be used to issue refund if needed
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 

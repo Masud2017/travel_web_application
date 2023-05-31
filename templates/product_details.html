@@ -1,0 +1,36 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+
+<div class = "row">
+    <div class ="col-sm-8">
+        <div name = "details" class = "p-sm-4">
+            {% if 'auth_app.change_hotels' in perms %}
+                <div class ="d-flex gap-4 mb-sm-4">
+                    <button class = "btn" style = "background-color: #F82D20;color : white">Edit</button>
+                    <button class = "btn" style = "background-color: #F82D20; color : white">Delete</button>
+                </div>
+            {% endif %}
+            <h2>{{hotel.name}}</h2>
+            <h4>Description</h4>
+            <p>
+                {{hotel.description}}
+            </p>
+            <h4>Address</h4>
+            <p>407/1 kollyanpur south paikpara sp roa, mirpur 1, dhaka 1216</p>
+        
+            <h6 style = "color : #F82D20" class = "mt-sm-5">Price : ${{hotel.price}} USD</h6>
+        
+            <div class = "d-flex gap-5 mt-sm-5">
+                <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Add to Package</a>
+                <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Buy now</a>
+            </div>
+        </div>
+        
+    </div>
+    <div class = "col-sm-4 p-sm-4">
+        <img  src="{{hotel.product_image_url}}" style ="width : 100%" alt="something went wrong">
+    </div>
+</div>
+
+{% endblock main %}

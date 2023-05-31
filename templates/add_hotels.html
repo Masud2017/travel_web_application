@@ -1,0 +1,21 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+
+<div class = "d-flex justify-content-center align-items-center" style = "height : 100vh">
+    <form style = "width : 20rem;padding: 2rem;" class = "shadow" method = "get" action = "{% url 'add_new_hotel' %}">
+        {% csrf_token %}
+        <input type = "text" class = "form-control" placeholder = "Enter product name" name= "name"/>
+        <input type = "number" class = "form-control mt-sm-2" name= "size"/>
+        <input type = "number" class = "form-control mt-sm-2" name= "count"/>
+        <input type = "text" class = "form-control mt-sm-2" placeholder = "Enter hotel image" name= "image"/>
+        <textarea class = "form-control mt-sm-2" placeholder = "Enter hotel description" name= "description"></textarea>
+        <input type = "text" class = "form-control mt-sm-2" placeholder = "Enter product title" name= "title"/>
+        <input type = "number" class = "form-control mt-sm-2" name= "price"/>
+        <input type = "number" class = "form-control mt-sm-2" name= "stock"/>
+
+        <input type = "submit" value = "Add hotel" class ="btn mt-sm-4" style = "background-color: #F82D20;color : white"/>
+    </form>
+</div>
+
+{% endblock main %}

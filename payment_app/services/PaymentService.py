@@ -1,6 +1,7 @@
 import stripe
 # from auth_app import util
 import logging
+from django.conf import settings
 
 class PaymentService:
     def __init__(self):
@@ -8,7 +9,7 @@ class PaymentService:
         # logging.setLoggerClass("stripe")
         # logging.getLogger('stripe').setLevel(logging.DEBUG)
 
-        token_secret = "sk_test_PoBT6YH9zQk0e1CmaBBvwE9T00DzILwK1R"
+        token_secret = settings.STRIPE_API_KEY
         
         
         # stripe.PaymentLink.create(

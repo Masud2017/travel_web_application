@@ -12,29 +12,29 @@ class ProductHandler:
     class FlightHandler:
         def __init__(self,current_user):
             self.current_user = current_user
-            stripe.api_key = "sk_test_PoBT6YH9zQk0e1CmaBBvwE9T00DzILwK1R"
+            stripe.api_key = settings.STRIPE_API_KEY
             
 
         def add_flight(self,name,flight_from,flight_to,price,flight_image,stock,description):
             try:
-                product = stripe.Product.create(
-                    name = "Flight name : "+name +' | from : '+flight_from + " | to : "+flight_to
-                )
+                # product = stripe.Product.create(
+                #     name = "Flight name : "+name +' | from : '+flight_from + " | to : "+flight_to
+                # )
 
-                price = stripe.Price.create(
-                    unit_amount=2000,
-                    currency="usd",
-                    recurring={"interval": "month"},
-                    product=product.id,
-                )
+                # price = stripe.Price.create(
+                #     unit_amount=2000,
+                #     currency="usd",
+                #     recurring={"interval": "month"},
+                #     product=product.id,
+                # )
                 
                 Flights.objects.create(
                     user_model_exnteded = self.current_user.usermodelextended
                     ,name = name
                     ,from_dst = flight_from, to_dst = flight_to
                     ,product_image_url = flight_image,price = price,stock = stock
-                    ,price_id = price.id
-                    ,product_id = product.id,description = description)
+                    
+                    )
 
                 return True
             except Exception as e:

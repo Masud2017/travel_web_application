@@ -2,14 +2,38 @@
 {% block title %}Travel reservation | Signup{% endblock title %}
 {% block main %}
 
-<div class = "d-flex justify-content-center align-items-center" style = "height: 100vh;">
+<div class = "d-flex flex-column justify-content-center align-items-center" style = "height: 100vh;">
     <form style = "width : 20rem" class = "shadow-sm p-sm-2 text-center" method = "POST" action = "{% url 'register' %}" enctype="multipart/form-data">
+        {% if messages %}
+            <ul class="messages text-center p-sm-1" style = "list-style-type:none;background-color: red;color :white;display:flex;justify-content:center;">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% csrf_token %}
         <input type = "text" placeholder="Enter your full name" class = "form-control" name = "name"/>
-        <input type = "email" placeholder="Enter your user name" class = "form-control mt-sm-2" name = "username"/>
+        <input type = "email" placeholder="Enter your email" class = "form-control mt-sm-2" name = "username"/>
         <input type = "password" placeholder="Enter your password" class = "form-control mt-sm-2" name = "password"/>
-        <input type = "file" class  = "form-control mt-sm-4" name = "image"/>
-        <input type = "submit" class = "btn btn-danger mt-sm-4 form-control" value= "Signup"/>
+        <input type = "password" placeholder="Enter your password again" class = "form-control mt-sm-2" name = "re_pass"/>
+        <input type = "file" class  = "form-control mt-sm-2" name = "image"/>
+
+        <div class = "d-flex justify-content-center gap-5 mt-sm-2">
+            <div class="form-check">
+                <input type="radio" class="form-check-input" id="agent" name="user_type" value="agent" checked>
+                <label class="form-check-label" for="agent">Agent</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" id="user" name="user_type" value="user">
+                <label class="form-check-label" for="user">User</label>
+            </div>
+    
+        </div>
+        <input type = "submit" class = "btn btn-danger mt-sm-4 form-control" value= "Signup" style = "background-color : #F82D20" />
+        <div class = "d-flex flex-column mt-sm-4">
+            <a>Don't have an account ?</a>
+            <a>Forgot password ?</a>
+        </div>
     </form>
 </div>
 
