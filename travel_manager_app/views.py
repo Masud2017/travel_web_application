@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.contrib.auth.decorators import permission_required,login_required
-from auth_app.models import Hotels,Flights
+from auth_app.models import Hotels,Flights,Activities
 
 from .services.ProductHandler import ProductHandler
 
@@ -69,28 +69,56 @@ def flights(request):
     flights = Flights.objects.all()
     return render(request,"flights.html",{"flights":flights})
 
+@login_required(login_url="/login")
+def add_flights(request):
+    return render(request,"add_flights.html")
 
 @login_required(login_url="/login")
 @permission_required([
-    "add_flights",
+    "auth_app.add_flights",
 ])
 def add_new_flight(request):
+    name = request.GET["name"]
     flight_from = request.GET["from"]
     flight_to = request.GET["to"]
+    travel_date = request.GET["travel_date"]
+    title = request.GET["title"]
     flight_image = request.GET["image"]
     price = request.GET["price"]
     stock = request.GET["stock"]
     description = request.GET["description"]
 
-    current_user = request.user
-    handler = ProductHandler(current_user)
-    flight_handler = handler.FlightHandler(current_user = current_user)
+    current_user = request.user.usermodelextended
     
-    is_done = flight_handler.add_flight(flight_from= flight_from, flight_to = flight_to, price = price
-                              ,flight_image = flight_image,stock = stock,description = description)
+    Flights.objects.create(user_model_exnteded= current_user,name = name,from_dst = flight_from,
+                           to_dst = flight_to,travel_date = travel_date,title = title,
+                           product_image_url = flight_image,price = price,stock = stock,
+                           description = description)
     
-    if is_done:
-        return HttpResponseRedirect("/")
-    else:
-        return HttpResponseRedirect("/error")
-        
+    return HttpResponseRedirect("/flights")
+
+    
+@login_required(login_url="/login")
+def flight_details(request,flight_id):
+    flight = Flights.objects.get(id = flight_id)
+    return render(request,"flight_details.html",{"flight":flight})
+
+@login_required(login_url="/login")
+def activities(request):
+    activities = Activities.objects.all()
+    return render(request,"activities.html",{"activities":activities})
+@login_required(login_url="/login")
+def add_activities(request):
+    return render(request, "add_activities.html")
+
+@login_required(login_url="/login")
+def add_new_activity(request):
+    name = request.GET["name"]
+
+    Activities.objects.create()
+    return HttpResponseRedirect("/activities")
+
+@login_required(login_url= "/login")
+def activity_details(request,activity_id):
+    activity = Activities.objects.get(id= activity_id)
+    return render(request,"activity_details.html",{"activity":activity})

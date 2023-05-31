@@ -13,11 +13,11 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" href="/">Hotels</a>
             </li>
-            <li class="nav-item" style = "background-color : #F82D20">
-                <a class="nav-link text-light" href="{% url 'flights' %}">Flights</a>
-            </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'activities' %}">Activities</a>
+                <a class="nav-link text-dark" href="{% url 'flights' %}">Flights</a>
+            </li>
+            <li class="nav-item"  style = "background-color : #F82D20">
+                <a class="nav-link text-light" href="{% url 'activities' %}">Activities</a>
             </li>
             <li class="nav-item">
             <a class="nav-link text-dark" href="#">Packages</a>
@@ -29,26 +29,26 @@
     </div>
 
     <div class = 'p-sm-4'>
-        <h5 style ="border-bottom: 4px solid #F82D20;display: inline">Flights<h5> 
-        {% if 'auth_app.add_flights' in perms %}
+        <h5 style ="border-bottom: 4px solid #F82D20;display: inline">Activities<h5> 
+        {% if 'auth_app.add_activities' in perms %}
             <div>
-                <a href = "{% url 'add_flights' %}" class = "btn mt-sm-4" style = "background-color: #F82D20;color : white">Add flight</a>
+                <a href = "{% url 'add_activities' %}" class = "btn mt-sm-4" style = "background-color: #F82D20;color : white">Add activities</a>
             </div>
         {% endif %}
 
         <div name = "card-group" class ="d-flex justify-content-center gap-2">
             
-            {% for flight_item in flights %}
-                <a href = "{% url 'flight_details' flight_item.id %}" style = "text-decoration: none;color : #343333">
+            {% for activity_item in activities %}
+                <a href = "{% url 'activity_details' activity_item.id %}" style = "text-decoration: none;color : #343333">
                     <div class="card" style="width: 18rem;">
-                        <img src={{flight_item.product_image_url}} class="card-img-top" alt="something went wrong">
+                        <img src={{activity_item.product_image_url}} class="card-img-top" alt="something went wrong">
                         <div class="card-body">
-                        <h3 class="card-title text-center">{{flight_item.name}}</h3>
-                        <p class="card-text text-center">{{flight_item.title}}</p>
+                        <h3 class="card-title text-center">{{activity_item.name}}</h3>
+                        <p class="card-text text-center">{{activity_item.title}}</p>
                         </div>
                         <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
-                            <p>Left {{flight_item.stock}} seats</p>
-                            <p>${{flight_item.price}} USD</p>
+                            <p>Left {{activity_item.stock}} seats</p>
+                            <p>${{activity_item.price}} USD</p>
                         </div>
                     </div>
                 </a>
