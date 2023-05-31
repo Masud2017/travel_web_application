@@ -11,31 +11,41 @@
                     <a href = "{% url 'delete_hotel' hotel.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
                 </div>
             {% endif %} {% endcomment %}
-            <h2>{{flight.name}}</h2>
+            <h2>{{activity.name}}</h2>
             <h4>Description</h4>
             <p>
-                {{flight.description}}
+                {{activity.description}}
             </p>
             <h4>Address</h4>
             <p>407/1 kollyanpur south paikpara sp roa, mirpur 1, dhaka 1216</p>
         
             <div>
-                <h6 style = "color : #F82D20" class = "mt-sm-5">Flight from : {{flight.from_dst}}</h6>
-                <h6 style = "color : #F82D20">Flight to : {{flight.to_dst}}</h6>
+                {% comment %} <h6 style = "color : #F82D20" class = "mt-sm-5">Flight from : {{activity.from_dst}}</h6>
+                <h6 style = "color : #F82D20">Flight to : {{flight.to_dst}}</h6> {% endcomment %}
                 
-                <h6 style = "color : #F82D20">Stock : {{flight.stock}}</h6>
-                <h6 style = "color : #F82D20">Price : ${{flight.price}} USD</h6>
+                {% comment %} <h6 style = "color : #F82D20">Stock : {{flight.stock}}</h6> {% endcomment %}
+                <h6 style = "color : #F82D20">Price : ${{activity.price}} USD</h6>
             </div>
         
+            <script>
+                function activity_not_available_alert(){
+                    alert("Sorry this product is out of stock. Wait for somedays to try again !!");
+                }
+            </script>
+
             <div class = "d-flex gap-5 mt-sm-5">
-                <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Add to Package</a>
+                {% if activity.price == 0 %}
+                    <a class = "btn" style = "background-color : #F82D20;color : white" onclick = "activity_not_available_alert()">Add to Package</a>
+                {% else %}
+                    <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Add to Package</a>
+                {% endif %}
                 {% comment %} <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Buy now</a> {% endcomment %}
             </div>
         </div>
         
     </div>
     <div class = "col-sm-4 p-sm-4">
-        <img  src="{{flight.product_image_url}}" style ="width : 100%" alt="something went wrong">
+        <img  src="{{activity.product_image_url}}" style ="width : 100%" alt="something went wrong">
     </div>
 </div>
 
