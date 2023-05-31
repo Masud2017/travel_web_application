@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.contrib.auth.decorators import permission_required,login_required
-from auth_app.models import Hotels
+from auth_app.models import Hotels,Flights
 
 from .services.ProductHandler import ProductHandler
 
@@ -28,10 +28,11 @@ def add_new_hotel(requeset):
     title = requeset.GET["title"]
     price = requeset.GET["price"]
     stock = requeset.GET["stock"]
+    address = requeset.GET["address"]
 
     current_user = requeset.user.usermodelextended
 
-    hotel = Hotels.objects.create(
+    Hotels.objects.create(
         user_model_exnteded = current_user,
         name = hotel_name,
         room_count = room_count,
@@ -40,15 +41,38 @@ def add_new_hotel(requeset):
         description = description,
         title = title,
         price = price,
-        stock = stock
+        stock = stock,
+        address = address
     )
 
     return HttpResponseRedirect("/")
 
+
+def edit_hotel(request,hotel_id):
+
+    hotel = Hotels.objects.get(id = hotel_id)
+    pass
+
+@login_required(login_url="/login")
+@permission_required([
+    "auth_app.delete_hotels",
+    ],login_url="/login")
+def delete_hotel(request,hotel_id):
+    print("printing the value of hotel id : ",hotel_id)
+    hotel = Hotels.objects.get(id = hotel_id)
+    hotel.delete()
+
+    return HttpResponseRedirect("/")
+
+@login_required(login_url="/login")
+def flights(request):
+    flights = Flights.objects.all()
+    return render(request,"flights.html",{"flights":flights})
+
+
 @login_required(login_url="/login")
 @permission_required([
     "add_flights",
-    "add_flights_for_user"
 ])
 def add_new_flight(request):
     flight_from = request.GET["from"]

@@ -3,7 +3,7 @@
 {% block main %}
 
 <div class = "d-flex justify-content-center align-items-center" style = "height : 100vh">
-    <form style = "width : 20rem;padding: 2rem;" class = "shadow" method = "get" action = "{% url 'add_new_hotel' %}">
+    <form style = "width : 20rem;padding: 2rem;" class = "shadow" method = "get" action = "{% url 'edit_hotel' %}">
         {% csrf_token %}
         <input type = "text" class = "form-control" placeholder = "Enter product name" name= "name"/>
         <input type = "number" class = "form-control mt-sm-2" name= "size"/>
@@ -16,7 +16,7 @@
         <input type = "text" placeholder = "Enter hotel address" class = "form-control mt-sm-2" name= "address"/>
 
 
-        <input type = "submit" value = "Add hotel" class ="btn mt-sm-4" style = "background-color: #F82D20;color : white"/>
+        <input type = "submit" value = "Update hotel" class ="btn mt-sm-4" style = "background-color: #F82D20;color : white"/>
     </form>
 </div>
 

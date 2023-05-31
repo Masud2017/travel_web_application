@@ -14,10 +14,10 @@
 
                 <ul class="nav shadow" style = "border-radius : 0.5rem">
                     <li class="nav-item" style = "background-color : #F82D20;border-top-left-radius:0.5rem;border-bottom-left-radius:0.5rem">
-                      <a class="nav-link text-light" href="#">Hotels</a>
+                      <a class="nav-link text-light" href="/">Hotels</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link text-dark" href="#">Flights</a>
+                      <a class="nav-link text-dark" href="{% url 'flights' %}">Flights</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" href="#">Activities</a>
@@ -39,7 +39,7 @@
                     </div>
                 {% endif %}
 
-                <div name = "card-group" class ="d-flex justify-content-center">
+                <div name = "card-group" class ="d-flex justify-content-center gap-2">
                     
                     {% for hotel_item in hotels %}
                         <a href = "{% url 'product_details' hotel_item.id %}" style = "text-decoration: none;color : #343333">
@@ -92,7 +92,7 @@
             <div class = 'p-sm-4'>
                 <h5 style ="border-bottom: 4px solid #F82D20;display: inline">Hotels<h5> 
                 
-                <div name = "card-group" class ="d-flex justify-content-center">
+                <div name = "card-group" class ="d-flex justify-content-center gap-2">
                     
                     <a href = "{% url 'product_details' %}" style = "text-decoration: none;color : #343333">
                         <div class="card" style="width: 18rem;">

@@ -7,8 +7,8 @@
         <div name = "details" class = "p-sm-4">
             {% if 'auth_app.change_hotels' in perms %}
                 <div class ="d-flex gap-4 mb-sm-4">
-                    <button class = "btn" style = "background-color: #F82D20;color : white">Edit</button>
-                    <button class = "btn" style = "background-color: #F82D20; color : white">Delete</button>
+                    <a href = "#" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
+                    <a href = "{% url 'delete_hotel' hotel.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
                 </div>
             {% endif %}
             <h2>{{hotel.name}}</h2>
@@ -19,11 +19,16 @@
             <h4>Address</h4>
             <p>407/1 kollyanpur south paikpara sp roa, mirpur 1, dhaka 1216</p>
         
-            <h6 style = "color : #F82D20" class = "mt-sm-5">Price : ${{hotel.price}} USD</h6>
+            <div>
+                <h6 style = "color : #F82D20" class = "mt-sm-5">Room count : {{hotel.room_count}}</h6>
+                <h6 style = "color : #F82D20">Room size : {{hotel.room_size}}</h6>
+                <h6 style = "color : #F82D20">Stock : {{hotel.stock}}</h6>
+                <h6 style = "color : #F82D20">Price : ${{hotel.price}} USD</h6>
+            </div>
         
             <div class = "d-flex gap-5 mt-sm-5">
                 <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Add to Package</a>
-                <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Buy now</a>
+                {% comment %} <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Buy now</a> {% endcomment %}
             </div>
         </div>
         
