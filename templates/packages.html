@@ -1,0 +1,66 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+
+<div name = "agent_section">
+    <div class ="d-flex flex-column align-items-center">
+        <form class = "d-flex gap-4 mt-sm-5" style = "width: 50rem">
+            <input type = "text" class = "form-control" placeholder = "Search flights"/>
+            <input type = "submit" class ='btn' style = "background-color : #F82D20;color : white" value= "Search"/>
+        </form>
+
+        <ul class="nav shadow" style = "border-radius : 0.5rem">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="/">Hotels</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'flights' %}">Flights</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'activities' %}">Activities</a>
+            </li>
+            <li class="nav-item" style = "background-color : #F82D20;border-top-right-radius:0.5rem;border-bottom-right-radius:0.5rem">
+                <a class="nav-link text-light" href="#">Packages</a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <div class = 'p-sm-4'>
+        <h5 style ="border-bottom: 4px solid #F82D20;display: inline">Packages<h5> 
+        {% if 'auth_app.add_activities' in perms %}
+            <div>
+                <a href = "{% url 'add_activities' %}" class = "btn mt-sm-4" style = "background-color: #F82D20;color : white">Add package</a>
+            </div>
+        {% endif %}
+
+        <div name = "card-group" class ="d-flex justify-content-center gap-2">
+            
+            {% for item in packages %}
+                <a href = "{% url 'package_details' item.id %}" style = "text-decoration: none;color : #343333">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                        <h3 class="card-title text-center">All in one package</h3>
+                        <p class="card-text text-center">A minimal package for middle class families</p>
+                        <p class="card-text text-center">Hotels - $20 USD</p>
+                        <p class="card-text text-center">Flights - $30 USD</p>
+                        <p class="card-text text-center">Activities - 2x - $60 USD</p>
+                    </div>
+                    <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
+                        <p>6 in stock</p>
+                        <p>$ 110 USD</p>
+                    </div>
+                    </div>
+                </a>
+            {% endfor %} 
+
+            
+
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock main %}

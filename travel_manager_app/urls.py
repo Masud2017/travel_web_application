@@ -16,5 +16,10 @@ urlpatterns = [
     path('add_new_activity',views.add_new_activity,name = 'add_new_activity'),
     path('activity_details/<int:activity_id>',views.activity_details,name = 'activity_details'),
 
+    path('packages',views.packages,name = 'packages'),
+    path('package_details/<int:package_id>',views.package_details,name = 'package_details'),
+
+
+
 ]
 

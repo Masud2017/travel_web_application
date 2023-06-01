@@ -11,10 +11,10 @@
                     <a href = "{% url 'delete_hotel' hotel.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
                 </div>
             {% endif %} {% endcomment %}
-            <h2>{{activity.name}}</h2>
+            <h2>{{package.name}}</h2>
             <h4>Description</h4>
             <p>
-                {{activity.description}}
+                {{package.description}}
             </p>
             {% comment %} <h4>Address</h4>
             <p>407/1 kollyanpur south paikpara sp roa, mirpur 1, dhaka 1216</p> {% endcomment %}
@@ -23,8 +23,8 @@
                 {% comment %} <h6 style = "color : #F82D20" class = "mt-sm-5">Flight from : {{activity.from_dst}}</h6>
                 <h6 style = "color : #F82D20">Flight to : {{flight.to_dst}}</h6> {% endcomment %}
                 
-                <h6 style = "color : #F82D20">Stock : {{activity.stock}}</h6>
-                <h6 style = "color : #F82D20">Price : ${{activity.price}} USD</h6>
+                <h6 style = "color : #F82D20">Stock : {{package.stock}}</h6>
+                <h6 style = "color : #F82D20">Price : ${{package.price}} USD</h6>
             </div>
         
             <script>
@@ -45,7 +45,7 @@
         
     </div>
     <div class = "col-sm-4 p-sm-4">
-        <img  src="{{activity.product_image_url}}" style ="width : 100%" alt="something went wrong">
+        <img  src="{{package.product_image_url}}" style ="width : 100%" alt="something went wrong">
     </div>
 </div>
 

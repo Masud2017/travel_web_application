@@ -20,12 +20,10 @@
                 <a class="nav-link text-dark" href="{% url 'activities' %}">Activities</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link text-dark" href="#">Packages</a>
+                <a class="nav-link text-dark" href="{% url 'packages' %}">Packages</a>
             </li>
-            <li class="nav-item">
-            <a class="nav-link text-dark" href="#">Custom Packages</a>
-            </li>
-            </ul>
+            
+        </ul>
     </div>
 
     <div class = 'p-sm-4'>
@@ -36,7 +34,13 @@
             </div>
         {% endif %}
 
-        <div name = "card-group" class ="d-flex justify-content-center gap-2">
+        <div class = "d-flex justify-content-center align-items-center" style = "height: 50vh" id = "spinner-container">
+            <div class="spinner-border text-primary" role="status" id = 'spinner'>
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div name = "card-group" class ="d-flex justify-content-center gap-2" id = "card-grp" style ="display: none !important">
             
             {% for flight_item in flights %}
                 <a href = "{% url 'flight_details' flight_item.id %}" style = "text-decoration: none;color : #343333">

@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.contrib.auth.decorators import permission_required,login_required
-from auth_app.models import Hotels,Flights,Activities
+from auth_app.models import Hotels,Flights,Activities,Packages
 
 from .services.ProductHandler import ProductHandler
 
@@ -122,3 +122,13 @@ def add_new_activity(request):
 def activity_details(request,activity_id):
     activity = Activities.objects.get(id= activity_id)
     return render(request,"activity_details.html",{"activity":activity})
+
+@login_required(login_url="/login")
+def packages(request):
+    packages = Packages.objects.all()
+    return render(request,"packages.html",{"packages":packages})
+
+@login_required(login_url= "/login")
+def package_details(request,package_id):
+    package = Packages.objects.get(id = package_id)
+    return render(request, "package_details.html",{"package":package})
