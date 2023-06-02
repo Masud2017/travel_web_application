@@ -19,12 +19,12 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" href="{% url 'activities' %}">Activities</a>
             </li>
-            <li class="nav-item" style ="background-color :#F82D20">
-                <a class="nav-link text-light" href="{% url 'packages' %}">Packages</a>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'packages' %}">Packages</a>
             </li>
             {% if user.usermodelextended.role.role != 1 %}
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'custom_packages' %}">Custom Packages</a>
+            <li class="nav-item" style ="background-color :#F82D20;border-top-right-radius:.5rem;border-bottom-right-radius:0.5rem">
+                <a class="nav-link text-light" href="{% url 'custom_packages' %}">Custom Packages</a>
             </li>
             {% endif %}
             
@@ -32,10 +32,10 @@
     </div>
 
     <div class = 'p-sm-4'>
-        <h5 style ="border-bottom: 4px solid #F82D20;display: inline">Packages<h5> 
-        {% if 'auth_app.add_activities' in perms %}
+        <h5 style ="border-bottom: 4px solid #F82D20;display: inline">Custom Packages<h5> 
+        {% if 'auth_app.add_custompackages' in perms %}
             <div>
-                <a href = "{% url 'add_packages' %}" class = "btn mt-sm-4" style = "background-color: #F82D20;color : white">Add package</a>
+                <a href = "{% url 'add_custom_packages' %}" class = "btn mt-sm-4" style = "background-color: #F82D20;color : white">Add custom package</a>
             </div>
         {% endif %}
 

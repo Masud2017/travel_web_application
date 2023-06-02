@@ -3,7 +3,6 @@
 {% block main %}
 
 {% if user.is_authenticated %}
-    {% if user.usermodelextended.role.role == 1 %}
         <!-- agent dash board section started -->
         <div name = "agent_section">
             <div class ="d-flex flex-column align-items-center">
@@ -25,7 +24,11 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" href="{% url 'packages' %}">Packages</a>
                     </li>
-                    
+                    {% if user.usermodelextended.role.role != 1 %}
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'custom_packages' %}">Custom Packages</a>
+                    </li>
+                    {% endif %}
                   </ul>
             </div>
 
@@ -67,58 +70,7 @@
             </div>
 
         </div>
-    {% else %}
-        <!-- user dash board section started -->
-        <div name = "agent_section">
-            <div class ="d-flex flex-column align-items-center">
-                <form class = "d-flex gap-4 mt-sm-5" style = "width: 50rem">
-                    <input type = "text" class = "form-control" placeholder = "Search hotels"/>
-                    <input type = "submit" class ='btn' style = "background-color : #F82D20;color : white" value= "Search"/>
-                </form>
-
-                <ul class="nav shadow" style = "border-radius : 0.5rem">
-                    <li class="nav-item" style = "background-color : #F82D20;border-top-left-radius:0.5rem;border-bottom-left-radius:0.5rem">
-                      <a class="nav-link text-light" href="#">Hotels</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-dark" href="#">Flights</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="#">Activities</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Packages</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Custom Packages</a>
-                    </li>
-                  </ul>
-            </div>
-
-            <div class = 'p-sm-4'>
-                <h5 style ="border-bottom: 4px solid #F82D20;display: inline">Hotels<h5> 
-                
-                <div name = "card-group" class ="d-flex justify-content-center gap-2">
-                    
-                    <a href = "{% url 'product_details' %}" style = "text-decoration: none;color : #343333">
-                        <div class="card" style="width: 18rem;">
-                            <img src="https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="something went wrong">
-                            <div class="card-body">
-                              <h3 class="card-title text-center">The New Pacific Hotel</h3>
-                              <p class="card-text text-center">Amsterdam, Netherland</p>
-                            </div>
-                            <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
-                                <p>Left 5 rooms</p>
-                                <p>$50 USD</p>
-                            </div>
-                        </div>
-                    </a>
-
-                </div>
-            </div>
-
-        </div>
-    {% endif %}
+    
 
 {% else %}
     <div class = "row mt-sm-4">

@@ -22,6 +22,11 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" href="{% url 'packages' %}">Packages</a>
             </li>
+            {% if user.usermodelextended.role.role != 1 %}
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'custom_packages' %}">Custom Packages</a>
+            </li>
+            {% endif %}
             
         </ul>
     </div>

@@ -18,8 +18,30 @@ urlpatterns = [
 
     path('packages',views.packages,name = 'packages'),
     path('package_details/<int:package_id>',views.package_details,name = 'package_details'),
+    path('add_packages',views.add_packages,name = 'add_packages'),
+    path('add_packages/<int:package_id>',views.add_packages,name = 'add_packages'),
+
+    path('select_hotel_for_package/<int:package_id>/<int:hotel_id>',views.select_hotel_for_package,name = 'select_hotel_for_package'),
+    path('select_flight_for_package/<int:package_id>/<int:flight_id>',views.select_flight_for_package,name = 'select_flight_for_package'),
+    path('select_activity_for_package/<int:package_id>/<int:activity_id>',views.select_activity_for_package,name = 'select_activity_for_package'),
+    path('deselect_activity_for_package/<int:package_id>/<int:activity_id>',views.deselect_activity_for_package,name = 'deselect_activity_for_package'),
+    path('save_package/<int:package_id>',views.save_package,name = 'save_package'),
+
+    path('custom_packages',views.custom_packages,name = 'custom_packages'),
+    path('add_custom_packages',views.add_custom_packages,name = 'add_custom_packages'),
+    path('add_custom_packages/<int:package_id>',views.add_custom_packages,name = 'add_custom_packages'),
+
+    path('save_custom_package/<int:package_id>',views.save_custom_package,name = 'save_custom_package'),
+
+    path('select_hotel_for_custom_package/<int:package_id>/<int:hotel_id>',views.select_hotel_for_custom_package,name = 'select_hotel_for_custom_package'),
+    path('select_flight_for_custom_package/<int:package_id>/<int:flight_id>',views.select_flight_for_custom_package,name = 'select_flight_for_custom_package'),
+    path('select_activity_for_custom_package/<int:package_id>/<int:activity_id>',views.select_activity_for_custom_package,name = 'select_activity_for_custom_package'),
+    path('deselect_activity_for_custom_package/<int:package_id>/<int:activity_id>',views.deselect_activity_for_custom_package,name = 'deselect_activity_for_custom_package'),
+
 
 
 
 ]
+
+
 

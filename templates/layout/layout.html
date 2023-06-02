@@ -28,8 +28,20 @@
               $("#spinner-container").css("height",0);
               $("#card-grp").fadeIn(1000);
           });
+
+        
           
       });
+      function selectHotel(hotel_id,name,title,price,qty,image_url) {
+        document.getElementById("hotel_input").value = hotel_id;
+        sessionStorage.setItem("hotel_id",hotel_id);
+        sessionStorage.setItem("hotel_name",name);
+        sessionStorage.setItem("hotel_title",title);
+        sessionStorage.setItem("hotel_price",price);
+        sessionStorage.setItem("hotel_qty",qty);
+        sessionStorage.setItem("hotel_image_url",image_url);
+
+      }
   </script>
 
     <style>

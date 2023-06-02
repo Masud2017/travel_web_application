@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.contrib.auth.decorators import permission_required,login_required
-from auth_app.models import Hotels,Flights,Activities,Packages
+from auth_app.models import Hotels,Flights,Activities,Packages,CustomPackages
 
 from .services.ProductHandler import ProductHandler
 
@@ -132,3 +132,206 @@ def packages(request):
 def package_details(request,package_id):
     package = Packages.objects.get(id = package_id)
     return render(request, "package_details.html",{"package":package})
+
+@login_required(login_url="/login")
+# @permission_required(["auth_app.add_packages"],login_url= "/login")
+def select_hotel_for_package(request,package_id,hotel_id):
+    hotel_qty = request.GET["hotel_qty"]
+    hotel = Hotels.objects.get(id = hotel_id)
+    Packages.objects.filter(id = package_id).update(hotel = hotel,hotel_qty = hotel_qty)
+
+    return HttpResponseRedirect("/add_packages/"+str(package_id))
+
+@login_required(login_url="/login")
+# @permission_required(["auth_app.add_packages"],login_url="/login")
+def add_packages(request,package_id = None):
+    if (package_id != None):
+        package = Packages.objects.get(id = package_id)
+        hotels = Hotels.objects.all()
+        flights = Flights.objects.all()
+
+        activity_list = package.activities.all()
+        activity_id_list = []
+
+        for x in activity_list:
+            activity_id_list.append(x.id)
+
+        activities = Activities.objects.exclude(id__in = activity_id_list)
+
+        
+        return render(request, "add_packages.html", {"hotels":hotels,"flights":flights,"activities":activities,"package":package})
+    else:
+        package = None
+        if Packages.objects.filter(is_done = False).count() == 0:
+            Packages.objects.create(user_model_extended = request.user.usermodelextended)
+        else:
+            package = Packages.objects.filter(is_done = False).first()
+            hotels = Hotels.objects.all()
+            flights = Flights.objects.all()
+            activities = Activities.objects.all()
+            return render(request, "add_packages.html", {"hotels":hotels,"flights":flights,"activities":activities,"package":package})
+        
+
+
+@login_required(login_url="/login")
+# @permission_required(["add_packages"],login_url= "/login")
+def select_flight_for_package(request,package_id,flight_id):
+    flight_qty = request.GET["flight_qty"]
+    flight = Flights.objects.get(id = flight_id)
+    Packages.objects.filter(id = package_id).update(flight = flight,flight_qty = flight_qty)
+
+    return HttpResponseRedirect("/add_packages/"+str(package_id))
+
+
+
+@login_required(login_url="/login")
+# @permission_required(["add_packages"],login_url= "/login")
+def select_activity_for_package(request,package_id,activity_id):
+    # flight_qty = request.GET["_qty"]
+    activity = Activities.objects.get(id = activity_id)
+    # Packages.objects.filter(id = package_id).update(activities = activity)
+    package = Packages.objects.get(id = package_id)
+    package.activities.add(activity)
+
+    return HttpResponseRedirect("/add_packages/"+str(package_id))
+
+@login_required(login_url="/login")
+# @permission_required(["add_packages"],login_url= "/login")
+def deselect_activity_for_package(request,package_id,activity_id):
+    # flight_qty = request.GET["_qty"]
+    activity = Activities.objects.get(id = activity_id)
+    # Packages.objects.filter(id = package_id).update(activities = activity)
+    package = Packages.objects.get(id = package_id)
+    package.activities.remove(activity)
+
+    return HttpResponseRedirect("/add_packages/"+str(package_id))
+
+@login_required(login_url="/login")
+def save_package(request,package_id):
+    name = request.GET["name"]
+    description = request.GET["desc"]
+
+    package = Packages.objects.get(id = package_id)
+    package.is_done = True
+
+    package.name = name
+
+    activity_price = 0
+    for item in package.activities.all():
+        activity_price = activity_price + item.price
+
+    package.price = (package.hotel_qty * package.hotel.price) + (package.flight.price * package.flight_qty) + activity_price
+
+    package.description = description
+
+    package.save()
+
+    return HttpResponseRedirect("/packages")
+
+# custom package section started
+
+@login_required(login_url="/login")
+@permission_required(["auth_app.add_custompackages"],login_url= "/login")
+def custom_packages(request):
+    packages = CustomPackages.objects.all()
+
+    return render(request,"custom_packages.html", {"packages":packages})
+
+@login_required(login_url='/login')
+@permission_required(["auth_app.add_custompackages"],login_url="/login")
+def add_custom_packages(request,package_id = None):
+    if (package_id != None):
+        package = CustomPackages.objects.get(id = package_id)
+        hotels = Hotels.objects.all()
+        flights = Flights.objects.all()
+
+        activity_list = package.activities.all()
+        activity_id_list = []
+
+        for x in activity_list:
+            activity_id_list.append(x.id)
+
+        activities = Activities.objects.exclude(id__in = activity_id_list)
+
+        
+        return render(request, "add_custom_packages.html", {"hotels":hotels,"flights":flights,"activities":activities,"package":package})
+    else:
+        package = None
+        if CustomPackages.objects.filter(is_done = False).count() == 0:
+            CustomPackages.objects.create(user_model_extended = request.user.usermodelextended)
+        else:
+            package = CustomPackages.objects.filter(is_done = False).first()
+            hotels = Hotels.objects.all()
+            flights = Flights.objects.all()
+            activities = Activities.objects.all()
+            return render(request, "add_custom_packages.html", {"hotels":hotels,"flights":flights,"activities":activities,"package":package})
+        
+
+
+
+
+
+@login_required(login_url="/login")
+def save_custom_package(request,package_id):
+    name = request.GET["name"]
+    description = request.GET["desc"]
+
+    package = CustomPackages.objects.get(id = package_id)
+    package.is_done = True
+
+    package.name = name
+
+    activity_price = 0
+    for item in package.activities.all():
+        activity_price = activity_price + item.price
+
+    package.price = (package.hotel_qty * package.hotel.price) + (package.flight.price * package.flight_qty) + activity_price
+
+    package.description = description
+
+    package.save()
+
+    return HttpResponseRedirect("/custom_packages")
+
+@login_required(login_url="/login")
+# @permission_required(["add_packages"],login_url= "/login")
+def select_hotel_for_custom_package(request,package_id,hotel_id):
+    hotel_qty = request.GET["hotel_qty"]
+    hotel = Hotels.objects.get(id = hotel_id)
+    CustomPackages.objects.filter(id = package_id).update(hotel = hotel,hotel_qty = hotel_qty)
+
+    return HttpResponseRedirect("/add_custom_packages/"+str(package_id))
+
+
+@login_required(login_url="/login")
+# @permission_required(["add_packages"],login_url= "/login")
+def select_flight_for_custom_package(request,package_id,flight_id):
+    flight_qty = request.GET["flight_qty"]
+    flight = Flights.objects.get(id = flight_id)
+    CustomPackages.objects.filter(id = package_id).update(flight = flight,flight_qty = flight_qty)
+
+    return HttpResponseRedirect("/add_custom_packages/"+str(package_id))
+
+
+
+@login_required(login_url="/login")
+# @permission_required(["add_packages"],login_url= "/login")
+def select_activity_for_custom_package(request,package_id,activity_id):
+    # flight_qty = request.GET["_qty"]
+    activity = Activities.objects.get(id = activity_id)
+    # Packages.objects.filter(id = package_id).update(activities = activity)
+    package = CustomPackages.objects.get(id = package_id)
+    package.activities.add(activity)
+
+    return HttpResponseRedirect("/add_custom_packages/"+str(package_id))
+
+@login_required(login_url="/login")
+# @permission_required(["add_packages"],login_url= "/login")
+def deselect_activity_for_custom_package(request,package_id,activity_id):
+    # flight_qty = request.GET["_qty"]
+    activity = Activities.objects.get(id = activity_id)
+    # Packages.objects.filter(id = package_id).update(activities = activity)
+    package = CustomPackages.objects.get(id = package_id)
+    package.activities.remove(activity)
+
+    return HttpResponseRedirect("/add_custom_packages/"+str(package_id))
