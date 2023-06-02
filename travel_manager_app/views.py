@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.contrib.auth.decorators import permission_required,login_required
-from auth_app.models import Hotels,Flights,Activities,Packages,CustomPackages
+from auth_app.models import Hotels,Flights,Activities,Packages,CustomPackages,OrderCustomPackages,OrderPackages
 
 from .services.ProductHandler import ProductHandler
 
@@ -63,6 +63,34 @@ def delete_hotel(request,hotel_id):
     hotel.delete()
 
     return HttpResponseRedirect("/")
+
+@login_required(login_url="/login")
+@permission_required([
+    "auth_app.delete_flights",
+    ],login_url="/login")
+def delete_hotel(request,flight_id):
+    flight = Flights.objects.get(id = flight_id)
+    flight.delete()
+
+    return HttpResponseRedirect("/flights")
+
+def delete_package(request,package_id):
+    package = Packages.objects.get(id = package_id)
+    package.delete()
+
+    return HttpResponseRedirect("/packages")
+
+def delete_custom_package(request,package_id):
+    package = CustomPackages.objects.get(id = package_id)
+    package.delete()
+
+    return HttpResponseRedirect("/custom_packages")
+
+def delete_activity(request,activity_id):
+    activity = Activities.objects.get(id = activity_id)
+    activity.delete()
+
+    return HttpResponseRedirect("/activities")
 
 @login_required(login_url="/login")
 def flights(request):
@@ -335,3 +363,83 @@ def deselect_activity_for_custom_package(request,package_id,activity_id):
     package.activities.remove(activity)
 
     return HttpResponseRedirect("/add_custom_packages/"+str(package_id))
+
+@login_required(login_url="/login")
+@permission_required(["auth_app.view_custompackages"],login_url="/login")
+def custom_packages_details(request,package_id):
+    custom_package = CustomPackages.objects.get(id = package_id)
+    return render(request,"custom_package_details.html", {"package":custom_package})
+
+
+
+@login_required(login_url="/login")
+@permission_required(["auth_app.add_orderpackages"], login_url="/login")
+def order_package(request,package_id):
+    package = Packages.objects.get(id = package_id)
+    
+    hotel = package.hotel
+    hotel_qty = package.hotel_qty
+    flight = package.flight
+    flight_qty = package.flight_qty
+    activities = package.activities.all()
+    
+    # first need to check whether any of these products are out of stock
+    # second need to deduct qty from subsequent products (hotels,flights)
+    if hotel.stock >= hotel_qty:
+        # then it is ok
+        hotel.stock = hotel.stock - hotel_qty
+        hotel.save()
+    else:
+        # then it is not ok
+        
+        pass
+
+    if flight.stock >= flight_qty:
+        # then it is ok
+        flight.stock = flight.stock - flight_qty
+        flight.save()
+    else:
+        # then it is not ok
+        pass
+    
+    return HttpResponseRedirect("/checkout_package/"+str(package_id))
+
+
+@login_required(login_url="/login")
+@permission_required(["auth_app.add_ordercustompackages"], login_url="/login")
+def order_custom_package(request,package_id):
+    package = CustomPackages.objects.get(id = package_id)
+    
+    hotel = package.hotel
+    hotel_qty = package.hotel_qty
+    flight = package.flight
+    flight_qty = package.flight_qty
+    activities = package.activities.all()
+    
+    # first need to check whether any of these products are out of stock
+    # second need to deduct qty from subsequent products (hotels,flights)
+    if hotel.stock >= hotel_qty:
+        # then it is ok
+        hotel.stock = hotel.stock - hotel_qty
+        hotel.save()
+    else:
+        # then it is not ok
+        
+        pass
+
+    if flight.stock >= flight_qty:
+        # then it is ok
+        flight.stock = flight.stock - flight_qty
+        flight.save()
+    else:
+        # then it is not ok
+        pass
+    
+    return HttpResponseRedirect("/checkout_custom_package/"+str(package_id))
+
+
+@login_required
+def myorders(request):
+    order_package = OrderPackages.objects.all()
+    order_custom_package = OrderCustomPackages.objects.all()
+    return render(request, "myorders.html", {"order_packages":order_package, "order_custom_packages":order_custom_package})

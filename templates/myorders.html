@@ -1,0 +1,54 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+<h1 class ="text-center">My order list</h1>
+<div class = "row container">
+    <div class = "col-sm-6 d-flex flex-column align-items-center">
+        <h3>Package list</h3>
+        {% for item in order_packages %}
+        {% if item.is_paid %}
+            <div class="card mb-sm-2" style="width: 18rem;">
+                <div class="card-body">
+                <h3 class="card-title text-center">{{item.packages.name}}</h3>
+                <p class="card-text text-center">{{item.packages.title}}</p>
+                <p class="card-text text-center">Hotels - {{item.packages.hotel_qty}}x -  ${{item.hotel.price}} USD</p>
+                <p class="card-text text-center">Flights - {{item.packages.flight_qty}}x - ${{item.flight.price}} USD</p>
+                <p class="card-text text-center">Activities - {{item.packages.activities.count}}x - ${{item.activities.price}} USD</p>
+            </div>
+            <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
+                {% comment %} <p>6 in stock</p> {% endcomment %}
+                <p>$ {{item.packages.price}} USD</p>
+                <a class ="btn" style = "background-color :#F82D20;color : white" href= "#">Refund</a>
+                <a class ="btn" style = "background-color :#F82D20;color : white" href= "#">Edit</a>
+            </div>
+            </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class = "col-sm-6 d-flex flex-column align-items-center">
+        <h3>Custom package list</h3>
+
+        {% for item in order_custom_packages %}
+        {% if item.is_paid %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+            <h3 class="card-title text-center">{{item.custom_packages.name}}</h3>
+            <p class="card-text text-center">{{item.custom_packages.title}}</p>
+            <p class="card-text text-center">Hotels - {{item.custom_packages.hotel_qty}}x -  ${{item.custom_pacakges.hotel.price}} USD</p>
+            <p class="card-text text-center">Flights - {{item.custom_packages.flight_qty}}x - ${{item.custom_packages.flight.price}} USD</p>
+            <p class="card-text text-center">Activities - {{item.custom_packages.activities.count}}x - ${{item.custom_packages.activities.price}} USD</p>
+        </div>
+        <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
+            {% comment %} <p>6 in stock</p> {% endcomment %}
+            <p>$ {{item.custom_packages.price}} USD</p>
+            <a class ="btn" style = "background-color :#F82D20;color : white" href= "#">Refund</a>
+            <a class ="btn" style = "background-color :#F82D20;color : white" href= "#">Edit</a>
+        </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock main %}
+

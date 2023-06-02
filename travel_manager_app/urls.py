@@ -7,6 +7,13 @@ urlpatterns = [
     path('add_hotels',views.add_hotel_page,name = 'add_hotels'),
     path('add_new_hotel',views.add_new_hotel,name = 'add_new_hotel'),
     path('delete_hotel/<int:hotel_id>',views.delete_hotel,name = 'delete_hotel'),
+    path('delete_flight/<int:flight_id>',views.delete_hotel,name = 'delete_flight'),
+    path('delete_package/<int:package_id>',views.delete_package,name = 'delete_package'),
+    path('delete_custom_package/<int:package_id>',views.delete_custom_package,name = 'delete_custom_package'),
+    path('delete_activity/<int:activity_id>',views.delete_activity,name = 'delete_activity'),
+
+
+
     path('flights',views.flights,name = 'flights'),
     path('add_flights',views.add_flights,name = 'add_flights'),
     path('add_new_flight',views.add_new_flight,name = 'add_new_flight'),
@@ -18,6 +25,7 @@ urlpatterns = [
 
     path('packages',views.packages,name = 'packages'),
     path('package_details/<int:package_id>',views.package_details,name = 'package_details'),
+    path('custom_package_details/<int:package_id>',views.custom_packages_details,name = 'custom_package_details'),
     path('add_packages',views.add_packages,name = 'add_packages'),
     path('add_packages/<int:package_id>',views.add_packages,name = 'add_packages'),
 
@@ -39,7 +47,10 @@ urlpatterns = [
     path('deselect_activity_for_custom_package/<int:package_id>/<int:activity_id>',views.deselect_activity_for_custom_package,name = 'deselect_activity_for_custom_package'),
 
 
+    path('order_package/<int:package_id>',views.order_package,name = 'order_package'),
+    path('order_custom_package/<int:package_id>',views.order_custom_package,name = 'order_custom_package'),
 
+    path('my_orders',views.myorders,name = 'my_orders'),
 
 ]
 

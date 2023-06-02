@@ -25,6 +25,9 @@ user_group.permissions.add(Permission.objects.get(codename = "view_custompackage
 user_group.permissions.add(Permission.objects.get(codename = "add_histories"))
 user_group.permissions.add(Permission.objects.get(codename = "delete_histories"))
 user_group.permissions.add(Permission.objects.get(codename = "view_histories"))
+user_group.permissions.add(Permission.objects.get(codename = "add_orderpackages"))
+user_group.permissions.add(Permission.objects.get(codename = "add_ordercustompackages"))
+
 
 # user_group.permissions.add(Permission.objects.get(codename = "can_create_flights"))
 
@@ -172,43 +175,48 @@ class CustomPackages(models.Model):
         verbose_name_plural = "CustomPackages"
 
 
-class Orders(models.Model):
-    user_model_extended = models.OneToOneField(UserModelExtended,on_delete=models.CASCADE,default = None)
+class OrderPackages(models.Model):
+    user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None)
 
-    is_package = models.BooleanField(default = False)
-    packages = models.ManyToManyField(Packages)
-    custom_packages = models.ManyToManyField(CustomPackages)
+    packages = models.ForeignKey(Packages,on_delete=models.CASCADE,default = None)
     is_paid =  models.BooleanField(default = False)
     payment_id = models.CharField(max_length=200,default = None, null= True,blank = True) # this will be used to issue refund if needed
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "Orders"
-        permissions = (
-            ("add_orders_for_user", "add orders for user"),
-            ("change_orders_for_user","change orders for user"),
-            ("delete_orders_for_user","delete orders for user"),
-            ("view_orders_for_user", "view orders for user")
-        )
+        verbose_name_plural = "OrderPackage"
+        
 
+class OrderCustomPackages(models.Model):
+    user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE,default = None)
 
-class Cancellations(models.Model):
-    user_model_extended = models.OneToOneField(UserModelExtended,on_delete=models.CASCADE,default = None)
+    custom_packages = models.ForeignKey(CustomPackages,on_delete=models.CASCADE,default = None)
+    is_paid =  models.BooleanField(default = False)
+    payment_id = models.CharField(max_length=200,default = None, null= True,blank = True) # this will be used to issue refund if needed
 
-    flight = models.ForeignKey(Flights,on_delete=models.CASCADE)
-    activity = models.ForeignKey(Activities,on_delete=models.CASCADE)
-    hotel = models.ForeignKey(Hotels, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "Cancellations"
-        permissions = (
-            ("add_cancellations_for_user","cancel for user"),
-            ("view_cancellations_for_user","view cancellations for user"),
-            ("delete_cancellations_for_user","delete cancellations for user"),
-            ("change_cancellations_for_user","change cancellations for user"),
-        )
+        verbose_name_plural = "OrderCustomPackage"
+
+
+# class Cancellations(models.Model):
+#     user_model_extended = models.OneToOneField(UserModelExtended,on_delete=models.CASCADE,default = None)
+
+#     flight = models.ForeignKey(Flights,on_delete=models.CASCADE)
+#     activity = models.ForeignKey(Activities,on_delete=models.CASCADE)
+#     hotel = models.ForeignKey(Hotels, on_delete=models.CASCADE)
+#     created_at = models.DateTimeField(auto_now_add=True, blank=True)
+
+#     class Meta:
+#         verbose_name_plural = "Cancellations"
+#         # permissions = (
+#         #     ("add_cancellations_for_user","cancel for user"),
+#         #     ("view_cancellations_for_user","view cancellations for user"),
+#         #     ("delete_cancellations_for_user","delete cancellations for user"),
+#         #     ("change_cancellations_for_user","change cancellations for user"),
+#         # )
         
 
 class Histories(models.Model):

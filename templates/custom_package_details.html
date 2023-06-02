@@ -38,7 +38,7 @@
                     {% if activity.stock == 0 %}
                         <a class = "btn" style = "background-color : #F82D20;color : white" onclick = "activity_not_available_alert()">Buy</a>
                     {% else %}
-                        <a href = "{% url 'order_package' package.id %}" class = "btn" style = "background-color : #F82D20;color : white">
+                        <a href = "{% url 'order_custom_package' package.id %}" class = "btn" style = "background-color : #F82D20;color : white">
                             Buy</a>
                     {% endif %}
                 {% endif %}

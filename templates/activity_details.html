@@ -5,12 +5,12 @@
 <div class = "row">
     <div class ="col-sm-8">
         <div name = "details" class = "p-sm-4">
-            {% comment %} {% if 'auth_app.change_hotels' in perms %}
+            {% if 'auth_app.delete_activities' in perms %}
                 <div class ="d-flex gap-4 mb-sm-4">
                     <a href = "#" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
-                    <a href = "{% url 'delete_hotel' hotel.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
+                    <a href = "{% url 'delete_activity' activity.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
                 </div>
-            {% endif %} {% endcomment %}
+            {% endif %}
             <h2>{{activity.name}}</h2>
             <h4>Description</h4>
             <p>

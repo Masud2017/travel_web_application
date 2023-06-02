@@ -43,7 +43,7 @@
             
             {% for item in packages %}
                {% if item.is_done %}
-                <a href = "{% url 'package_details' item.id %}" style = "text-decoration: none;color : #343333">
+                <a href = "{% url 'custom_package_details' item.id %}" style = "text-decoration: none;color : #343333">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                         <h3 class="card-title text-center">{{item.name}}</h3>

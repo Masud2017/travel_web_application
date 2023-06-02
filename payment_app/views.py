@@ -1,41 +1,173 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect,redirect
 import stripe
 from django.conf import settings
+from auth_app.models import Packages,CustomPackages,OrderPackages,OrderCustomPackages
 
-def checkout(request):
-    stripe.api_key = "sk_test_PoBT6YH9zQk0e1CmaBBvwE9T00DzILwK1R"
-    print(settings.STRIPE_API_KEY)
+def checkout_package(request,package_id):
+    stripe.api_key = settings.STRIPE_API_KEY
+
+    package = Packages.objects.get(id = package_id)
+
+    activity_product_json_list = []
+ 
+    hotel = {
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount": package.hotel.price * 100,
+                    "product_data": {
+                        "name": package.hotel.name,
+                        "images": [package.hotel.product_image_url],
+                    },
+                },
+                "quantity": package.hotel_qty,
+            }
+    
+    activity_product_json_list.append(hotel)
+
+    flight = {
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount": package.flight.price * 100,
+                    "product_data": {
+                        "name": package.flight.name,
+                        "images": [package.flight.product_image_url],
+                    },
+                },
+                "quantity": package.flight_qty,
+            }
+    
+    activity_product_json_list.append(flight)
+
+    for activity_item in package.activities.all():
+        print("name of activity " ,activity_item.name)
+        json = {
+            "price_data": {
+                "currency":"usd",
+                "unit_amount": activity_item.price * 100,
+                "product_data": {
+                    "name": activity_item.name,
+                    "images" : [activity_item.product_image_url]
+                },
+            },
+            "quantity":1
+        }
+
+
+
+        activity_product_json_list.append(json)
+
+    print (activity_product_json_list)
 
     checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {
-                    "price_data": {
-                        "currency": "usd",
-                        "unit_amount": 2000,
-                        "product_data": {
-                            "name": "test_from_code_product",
-                            "images": ["https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"],
-                        },
-                    },
-                    "quantity": 1,
-                },
-                 {
-                    "price_data": {
-                        "currency": "usd",
-                        "unit_amount": 2000,
-                        "product_data": {
-                            "name": "test_from_code_product",
-                            "images": ["https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"],
-                        },
-                    },
-                    "quantity": 2,
-                }
-            ],
+            line_items= activity_product_json_list,
             mode='payment',
             success_url='http://localhost:8000/',
             cancel_url='http://localhost:8000/login',
         )
     
+    order = OrderPackages()
+    order.user_model_extended = request.user.usermodelextended
+    order.is_paid = True
+    order.packages = package
+    order.payment_id = checkout_session.payment_intent
+    order.save()
+
     print("Printing the id of payment : "+checkout_session.payment_intent)
     
     return redirect(checkout_session.url, code=303)
+
+
+def checkout_custom_package(request,package_id):
+    stripe.api_key = settings.STRIPE_API_KEY
+
+    package = CustomPackages.objects.get(id = package_id)
+
+    activity_product_json_list = []
+ 
+    hotel = {
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount": package.hotel.price * 100,
+                    "product_data": {
+                        "name": package.hotel.name,
+                        "images": [package.hotel.product_image_url],
+                    },
+                },
+                "quantity": package.hotel_qty,
+            }
+    
+    activity_product_json_list.append(hotel)
+
+    flight = {
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount": package.flight.price * 100,
+                    "product_data": {
+                        "name": package.flight.name,
+                        "images": [package.flight.product_image_url],
+                    },
+                },
+                "quantity": package.flight_qty,
+            }
+    
+    activity_product_json_list.append(flight)
+
+    for activity_item in package.activities.all():
+        print("name of activity " ,activity_item.name)
+        json = {
+            "price_data": {
+                "currency":"usd",
+                "unit_amount": activity_item.price * 100,
+                "product_data": {
+                    "name": activity_item.name,
+                    "images" : [activity_item.product_image_url]
+                },
+            },
+            "quantity":1
+        }
+
+
+
+        activity_product_json_list.append(json)
+
+    print (activity_product_json_list)
+
+    checkout_session = stripe.checkout.Session.create(
+            line_items= activity_product_json_list,
+            mode='payment',
+            success_url='http://localhost:8000/',
+            cancel_url='http://localhost:8000/login',
+        )
+    
+    order = OrderCustomPackages()
+    order.user_model_extended = request.user.usermodelextended
+    order.is_paid = True
+    order.custom_packages = package
+    order.payment_id = checkout_session.payment_intent
+    order.save()
+
+    print("Printing the id of payment : "+checkout_session.payment_intent)
+    
+    return redirect(checkout_session.url, code=303)
+
+
+def refund_package_order(request,order_id):
+    order = OrderPackages.objects.get(id = order_id)
+    payment_id = order.payment_id
+    stripe.api_key = settings.STRIPE_API_KEY
+    stripe.Refund.create(payment_intent = payment_id)
+
+    # now re add the qty to the hotel,flight
+    hotel = order.packages.hotel
+    hotel.stock = hotel.stock + order.packages.hotel_qty
+    hotel.save()
+    
+    flight = order.packages.flight
+    flight.stock = flight.stock = order.packages.flight_qty
+    flight.save()
+
+    return HttpResponseRedirect("/")
+
+
+def refund_custom_package_order(request,order):
+    pass
