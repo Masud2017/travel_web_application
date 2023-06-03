@@ -1,6 +1,7 @@
 {% extends "layout/layout.html" %}
 {% block title %}Travel reservation | Homepage{% endblock title %}
 {% block main %}
+{% load static %}
 <h1 class ="text-center">My order list</h1>
 <div class = "row container">
     <div class = "col-sm-6 d-flex flex-column align-items-center">
@@ -15,11 +16,21 @@
                 <p class="card-text text-center">Flights - {{item.packages.flight_qty}}x - ${{item.flight.price}} USD</p>
                 <p class="card-text text-center">Activities - {{item.packages.activities.count}}x - ${{item.activities.price}} USD</p>
             </div>
+
+            {% if user.usermodelextended.role.role == 1 %}
+                <div class = "d-flex flex-column align-items-center">
+                    <img src = "{% static item.user_model_extended.image_url %}" alt = "Something went wrong" style = "width : 4rem;"/>
+                    <h5>{{item.user_model_extended.user.first_name}}</h5>
+                </div>
+            {% endif %}
+
             <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
                 {% comment %} <p>6 in stock</p> {% endcomment %}
                 <p>$ {{item.packages.price}} USD</p>
-                <a class ="btn" style = "background-color :#F82D20;color : white" href= "#">Refund</a>
-                <a class ="btn" style = "background-color :#F82D20;color : white" href= "#">Edit</a>
+                {% if user.usermodelextended.role.role == 1 %}
+                    <a class ="btn" style = "background-color :#F82D20;color : white" href= "{% url 'refund_package_order' item.id %}">Refund</a>
+                    <a class ="btn" style = "background-color :#F82D20;color : white" href= "{% url 'add_packages' item.packages.id %}">Edit</a>
+                {% endif %}
             </div>
             </div>
         {% endif %}
@@ -38,11 +49,19 @@
             <p class="card-text text-center">Flights - {{item.custom_packages.flight_qty}}x - ${{item.custom_packages.flight.price}} USD</p>
             <p class="card-text text-center">Activities - {{item.custom_packages.activities.count}}x - ${{item.custom_packages.activities.price}} USD</p>
         </div>
+        {% if user.usermodelextended.role.role == 1 %}
+            <div class = "d-flex flex-column align-items-center">
+                <img src = "{% static item.user_model_extended.image_url %}" alt = "Something went wrong" style = "width : 4rem;"/>
+                <h5>{{item.user_model_extended.user.first_name}}</h5>
+            </div>
+        {% endif %}
         <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
             {% comment %} <p>6 in stock</p> {% endcomment %}
             <p>$ {{item.custom_packages.price}} USD</p>
-            <a class ="btn" style = "background-color :#F82D20;color : white" href= "#">Refund</a>
-            <a class ="btn" style = "background-color :#F82D20;color : white" href= "#">Edit</a>
+            {% if user.usermodelextended.role.role == 1 %}
+                <a class ="btn" style = "background-color :#F82D20;color : white" href= "{% url 'refund_package_order' item.id %}">Refund</a>
+                <a class ="btn" style = "background-color :#F82D20;color : white" href= "{% url 'add_custom_packages' item.custom_packages.id %}">Edit</a>
+            {% endif %}
         </div>
         </div>
         {% endif %}

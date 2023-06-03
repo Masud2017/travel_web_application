@@ -65,7 +65,7 @@
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     {% if user.usermodelextended.role.role == 1 %}
                       <li><a class="dropdown-item" href="{% url 'my_orders' %}">Order Requests</a></li>
-
+                      <li><a class="dropdown-item" href="{% url 'histories' %}">Histories</a></li>
                       <li><a class="dropdown-item" href="#">Setting</a></li>
                       <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     {% else %}

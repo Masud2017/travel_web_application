@@ -1,8 +1,9 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.contrib.auth.decorators import permission_required,login_required
-from auth_app.models import Hotels,Flights,Activities,Packages,CustomPackages,OrderCustomPackages,OrderPackages
-
+from auth_app.models import Hotels,Flights,Activities,Packages,CustomPackages,OrderCustomPackages,OrderPackages,HistoriesOrder,HistoriesCustomOrder
+from django.contrib.auth.models import User
 from .services.ProductHandler import ProductHandler
+from . import util
 
 # Create your views here.
 @login_required
@@ -442,4 +443,36 @@ def order_custom_package(request,package_id):
 def myorders(request):
     order_package = OrderPackages.objects.all()
     order_custom_package = OrderCustomPackages.objects.all()
+
     return render(request, "myorders.html", {"order_packages":order_package, "order_custom_packages":order_custom_package})
+
+
+@login_required(login_url="/login")
+def add_history(request,status,order_id,other_user_id = None):
+    if (request.user.usermodelextended.role.role == 1): # agent
+        other_user = User.objects.get(id = other_user_id)
+        order = OrderPackages.objects.get(id = order_id)
+        util.add_history_order_for_agent(request.user.usermodelextended,other_user,order,status)
+    else:
+        order = OrderPackages.objects.get(id = order_id)
+        util.add_history_order_for_user(request.user.usermodelextended,other_user_id,order,status)
+
+    return HttpResponseRedirect("/")
+
+@login_required
+def add_custom_history(request,status,order_id,other_user_id = None):
+    if (request.user.usermodelextended.role.role == 1): # agent
+        other_user = User.objects.get(id = other_user_id)
+        order = OrderCustomPackages.objects.get(id = order_id)
+        util.add_history_custom_order_for_agent(request.user.usermodelextended,other_user,order,status)
+    else:
+        order = OrderCustomPackages.objects.get(id = order_id)
+        util.add_history_custom_order_for_user(request.user.usermodelextended,other_user_id,order,status)
+
+    return HttpResponseRedirect("/")
+
+@login_required(login_url="/login")
+def histories(request):
+    histories_order = HistoriesOrder.objects.filter(user_model_extended = request.user.usermodelextended)
+    histories_custom_order = HistoriesCustomOrder.objects.filter(user_model_extended = request.user.usermodelextended)
+    return render(request, "histories.html", {"histories_order":histories_order, "histories_custom_order":histories_custom_order})

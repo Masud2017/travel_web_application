@@ -49,6 +49,7 @@ agent_group.permissions.add(Permission.objects.get(codename = "change_activities
 agent_group.permissions.add(Permission.objects.get(codename = "delete_activities"))
 
 agent_group.permissions.add(Permission.objects.get(codename = "add_packages"))
+agent_group.permissions.add(Permission.objects.get(codename = "add_custompackages"))
 agent_group.permissions.add(Permission.objects.get(codename = "view_packages"))
 agent_group.permissions.add(Permission.objects.get(codename = "change_packages"))
 agent_group.permissions.add(Permission.objects.get(codename = "delete_packages"))
@@ -219,10 +220,24 @@ class OrderCustomPackages(models.Model):
 #         # )
         
 
-class Histories(models.Model):
+class HistoriesOrder(models.Model):
     user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE)
-    product_id = models.IntegerField(default = None,null = True, blank = True) # product can be anything (hotels, activities,flights,packages,custom packages)
-    description = models.CharField(max_length = 255,default = "No description available",null = True, blank = True)
+    order = models.ForeignKey(OrderPackages,on_delete=models.CASCADE,default = None)
+    status = models.CharField(max_length = 255,default = "No description available",null = True, blank = True)
+    other_user = models.ForeignKey(User,on_delete=models.CASCADE,default = None)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
     class Meta:
-        verbose_name_plural = "Histories"
+        verbose_name_plural = "HistoriesOrder"
+
+class HistoriesCustomOrder(models.Model):
+    user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE)
+    custom_order = models.ForeignKey(OrderCustomPackages,on_delete=models.CASCADE,default = None)
+    status = models.CharField(max_length = 255,default = "No description available",null = True, blank = True)
+    other_user = models.ForeignKey(User,on_delete=models.CASCADE,default = None)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    class Meta:
+        verbose_name_plural = "HistoriesCustomOrder"

@@ -52,6 +52,11 @@ urlpatterns = [
 
     path('my_orders',views.myorders,name = 'my_orders'),
 
+    path('histories',views.histories,name = 'histories'),
+    path('add_history/<slug:status>/<int:order_id>/<int:other_user_id>',views.add_history,name = 'add_history'),
+    path('add_history/<slug:status>/<int:order_id>',views.add_history,name = 'add_history'),
+    path('add_custom_history/<str:status>/<int:order_id>/<int:other_user_id>',views.add_custom_history,name = 'add_custom_history'),
+    path('add_custom_history/<str:status>/<int:order_id>',views.add_custom_history,name = 'add_custom_history'),
 ]
 
 

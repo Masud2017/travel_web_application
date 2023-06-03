@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'auth_app',
     "travel_manager_app",
-    "payment_app"
+    "payment_app",
+    "email_notifier_app"
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 STRIPE_API_KEY = os.getenv("stripe_api_key")
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "sender email"
+EMAIL_HOST_PASSWORD = "app_password will be placedhere"

@@ -163,11 +163,29 @@ def refund_package_order(request,order_id):
     hotel.save()
     
     flight = order.packages.flight
-    flight.stock = flight.stock = order.packages.flight_qty
+    flight.stock = flight.stock + order.packages.flight_qty
     flight.save()
+
+    order.delete()
 
     return HttpResponseRedirect("/")
 
 
-def refund_custom_package_order(request,order):
-    pass
+def refund_custom_package_order(request,order_id):
+    order = OrderCustomPackages.objects.get(id = order_id)
+    payment_id = order.payment_id
+    stripe.api_key = settings.STRIPE_API_KEY
+    stripe.Refund.create(payment_intent = payment_id)
+
+    # now re add the qty to the hotel,flight
+    hotel = order.custom_packages.hotel
+    hotel.stock = hotel.stock + order.custom_packages.hotel_qty
+    hotel.save()
+    
+    flight = order.custom_packages.flight
+    flight.stock = flight.stock + order.custom_packages.flight_qty
+    flight.save()
+
+    order.delete()
+
+    return HttpResponseRedirect("/")
