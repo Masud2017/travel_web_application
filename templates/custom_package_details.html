@@ -2,54 +2,190 @@
 {% block title %}Travel reservation | Homepage{% endblock title %}
 {% block main %}
 
-<div class = "row">
-    <div class ="col-sm-8">
-        <div name = "details" class = "p-sm-4">
-            {% if 'auth_app.change_hotels' in perms %}
-                <div class ="d-flex gap-4 mb-sm-4">
-                    <a href = "#" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
-                    <a href = "{% url 'delete_package' package.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
-                </div>
-            {% endif %} 
-            <h2>{{package.name}}</h2>
-            <h4>Description</h4>
-            <p>
-                {{package.description}}
-            </p>
-            {% comment %} <h4>Address</h4>
-            <p>407/1 kollyanpur south paikpara sp roa, mirpur 1, dhaka 1216</p> {% endcomment %}
+<div class = "container p-4">
         
-            <div>
-                {% comment %} <h6 style = "color : #F82D20" class = "mt-sm-5">Flight from : {{activity.from_dst}}</h6>
-                <h6 style = "color : #F82D20">Flight to : {{flight.to_dst}}</h6> {% endcomment %}
-                
-                <h6 style = "color : #F82D20">Stock : {{package.stock}}</h6>
-                <h6 style = "color : #F82D20">Price : ${{package.price}} USD</h6>
-            </div>
-        
-            <script>
-                function activity_not_available_alert(){
-                    alert("Sorry this product is out of stock. Wait for somedays to try again !!");
-                }
-            </script>
+    {% if 'auth_app.change_hotels' in perms %}
+    <div class ="d-flex gap-4 mb-sm-4">
+        <a href = "#" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
+        <a href = "{% url 'delete_package' package.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
+    </div>
+    {% endif %} 
 
-            <div class = "d-flex gap-5 mt-sm-5">
-                {% if "auth_app.add_orders" in perms %}
-                    {% if activity.stock == 0 %}
-                        <a class = "btn" style = "background-color : #F82D20;color : white" onclick = "activity_not_available_alert()">Buy</a>
-                    {% else %}
-                        <a href = "{% url 'order_custom_package' package.id %}" class = "btn" style = "background-color : #F82D20;color : white">
-                            Buy</a>
-                    {% endif %}
-                {% endif %}
-                {% comment %} <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Buy now</a> {% endcomment %}
+    <div class ="p-2 shadow">
+        <h4>Package name : {{package.name}}</h4>
+        <h4>Package title : {{package.title}}</h4>
+        <h4>Package price : ${{package.price}} USD</h4>
+    </div>
+
+
+    <div class = "row mt-sm-5" style  ="width : 100%">
+    <div class = "col-sm-4">
+    <button data-bs-target="#addhotel"  data-bs-toggle="modal" type = "button" class= "btn btn-danger">Add Hotel</button>
+
+    <div class="card" style="width: 18rem;">
+    <img src={{package.hotel.product_image_url}} class="card-img-top" alt="something went wrong">
+    <div class="card-body">
+    <h3 class="card-title text-center">{{package.hotel.name}}</h3>
+    <p class="card-text text-center">{{package.hotel.title}}</p>
+    </div>
+    <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
+    <p>Left {{package.hotel.stock}} rooms</p>
+    <p>${{package.hotel.price}} USD</p>
+    </div>
+    </div>
+
+    <!-- add hotel Modal -->
+    <div class="modal fade" id="addhotel" tabindex="-1" aria-labelledby="addhotelLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="addhotelLabel">Select hotel</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body" style ="height : 30rem; overflow-y:auto">
+        {% for item in hotels %}
+            <div class ="d-flex shadow p-sm-2 gap-2 mb-sm-2">
+                <img src = {{item.product_image_url}} alt = "something went wrong" style = "height : 100%;width: 4rem;"/>
+                <div style = "width:25rem">
+                    <h5>{{item.name}}</h5>
+                    <h6 style ="line-height:0.5rem">{{item.title}}</h6>
+                </div>
+
+                <div style = "width: 20rem">
+                    <h6 style= "color :#F82D20">Stock : {{item.stock}}</h6>
+                    <h6 style= "color :#F82D20">Price : {{item.price}}</h6>
+                </div>
+                <form action = "{% url 'select_hotel_for_custom_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
+                    <div>Qty<input type = "number" style = "width: 2rem" value = "1" name = "hotel_qty"/></div>
+                    <input type ="submit"  class ="btn" style ="background-color : #F82D20;color : white" onclick = "selectHotel('{{item.id}}','{{item.name}}','{{item.title}}','{{item.price}}','4','{{item.product_image_url}}')" value = "Submit">
+                </form>
+
             </div>
+        {% endfor %}
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+    </div>
+
+    <div class = "col-sm-4">
+    <button data-bs-target="#addflight"  data-bs-toggle="modal" type = "button" class= "btn btn-danger">Add Flight</button>
+
+    <div class="card" style="width: 18rem;">
+    <img src={{package.flight.product_image_url}} class="card-img-top" alt="something went wrong">
+    <div class="card-body">
+    <h3 class="card-title text-center">{{package.flight.name}}</h3>
+    <p class="card-text text-center">{{package.flight.title}}</p>
+    </div>
+    <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
+    <p>Left {{package.flight.stock}} seats</p>
+    <p>${{package.flight.price}} USD</p>
+    </div>
+    </div>
+
+    <!-- add flight Modal -->
+    <div class="modal fade" id="addflight" tabindex="-1" aria-labelledby="addhotelLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="addflightLabel">Select flight</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body" style ="height : 30rem; overflow-y:auto">
+        {% for item in flights %}
+            <div class ="d-flex shadow p-sm-2 gap-2 mb-sm-2">
+                <img src = {{item.product_image_url}} alt = "something went wrong" style = "height : 100%;width: 4rem;"/>
+                <div style = "width:25rem">
+                    <h5>{{item.name}}</h5>
+                    <h6 style ="line-height:0.5rem">{{item.title}}</h6>
+                </div>
+
+                <div style = "width: 20rem">
+                    <h6 style= "color :#F82D20">Stock : {{item.stock}}</h6>
+                    <h6 style= "color :#F82D20">Price : {{item.price}}</h6>
+                </div>
+                <form action = "{% url 'select_flight_for_custom_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
+                    <div>Qty<input type = "number" style = "width: 2rem" value = "1" name = "flight_qty"/></div>
+                    <input type ="submit"  class ="btn" style ="background-color : #F82D20;color : white" onclick = "selectHotel('{{item.id}}','{{item.name}}','{{item.title}}','{{item.price}}','4','{{item.product_image_url}}')" value = "Submit">
+                </form>
+
+            </div>
+        {% endfor %}
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+    </div>
+
+    <div class = "col-sm-4">
+    <button data-bs-target="#addactivity" data-bs-toggle="modal" type = "button" class= "btn btn-danger">Add Activity</button>
+
+    <!-- add flight Modal -->
+    <div class="modal fade" id="addactivity" tabindex="-1" aria-labelledby="addactivityLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="addactivityLabel">Select flight</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body" style ="height : 30rem; overflow-y:auto">
+        {% for item in activities %}
+            <div class ="d-flex shadow p-sm-2 gap-2 mb-sm-2">
+                <img src = {{item.product_image_url}} alt = "something went wrong" style = "height : 100%;width: 4rem;"/>
+                <div style = "width:25rem">
+                    <h5>{{item.name}}</h5>
+                    <h6 style ="line-height:0.5rem">{{item.title}}</h6>
+                </div>
+
+                <div style = "width: 20rem">
+                    <h6 style= "color :#F82D20">Stock : {{item.stock}}</h6>
+                    <h6 style= "color :#F82D20">Price : {{item.price}}</h6>
+                </div>
+                <form action = "{% url 'select_activity_for_custom_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
+                    {% comment %} <div>Qty<input type = "number" style = "width: 2rem" value = "1" name = "flight_qty"/></div> {% endcomment %}
+                    <input type ="submit"  class ="btn" style ="background-color : #F82D20;color : white" onclick = "selectHotel('{{item.id}}','{{item.name}}','{{item.title}}','{{item.price}}','4','{{item.product_image_url}}')" value = "Submit">
+                </form>
+
+            </div>
+        {% endfor %}
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+    <div style = "height : 70vh;overflow-y:auto">
+    {% for item in package.activities.all %}
+    <div class="card mt-sm-2" style="width: 18rem;">
+        <img src={{item.product_image_url}} class="card-img-top" alt="something went wrong">
+        <div class="card-body">
+        <h3 class="card-title text-center">{{item.name}}</h3>
+        <p class="card-text text-center">{{item.title}}</p>
         </div>
-        
+        <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
+            <p>Left {{item.stock}} seats</p>
+            <p>${{item.price}} USD</p>
+        </div>
+        <div class = "card-footer d-flex justify-content-center">
+            <a class = "btn" style = "background-color : #F82D20;color : white" href = "{% url 'deselect_activity_for_custom_package' package.id item.id %}">
+                Remove
+            </a>
+        </div>
     </div>
-    <div class = "col-sm-4 p-sm-4">
-        <img  src="{{package.product_image_url}}" style ="width : 100%" alt="something went wrong">
+    {% endfor %}
     </div>
+
+    </div>
+    </div>
+    {% if "auth_app.add_orders" in perms %}
+    <a href = "{% url 'order_package' package.id %}" class = "btn" style = "background-color : #F82D20;color : white">
+    Buy</a>
+    {% endif %}
 </div>
+
 
 {% endblock main %}

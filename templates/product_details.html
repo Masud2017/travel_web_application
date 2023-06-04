@@ -27,7 +27,10 @@
             </div>
         
             <div class = "d-flex gap-5 mt-sm-5">
-                <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Add to Package</a>
+                <form action = "{% url 'select_hotel_for_custom_package' package.id hotel.id  %}" method = "get">
+                    <input type = "number" name= "hotel_qty" value = "1" hidden/>
+                    <input type ="submit" class = "btn" style = "background-color : #F82D20;color : white" value = "Add to Package">
+                </form>
                 {% comment %} <a href = "#" class = "btn" style = "background-color : #F82D20;color : white">Buy now</a> {% endcomment %}
             </div>
         </div>

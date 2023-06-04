@@ -9,8 +9,13 @@ from . import util
 @login_required
 def product_details(request,hotel_id):
     hotel = Hotels.objects.get(id = hotel_id)
+    package= None
+    package = CustomPackages.objects.filter(is_done = False,user_model_extended = request.user.usermodelextended).first()
+    if package == None:
+        package = CustomPackages.objects.create(user_model_extended = request.user.usermodelextended)
 
-    return render(request,"product_details.html",{"hotel":hotel})
+
+    return render(request,"product_details.html",{"hotel":hotel,"package":package})
 
 def add_hotel_page(request):
     return render(request,"add_hotels.html")
@@ -77,13 +82,16 @@ def delete_hotel(request,flight_id):
 
 def delete_package(request,package_id):
     package = Packages.objects.get(id = package_id)
-    package.delete()
+    package.is_done = False
+    package.save()
 
     return HttpResponseRedirect("/packages")
 
 def delete_custom_package(request,package_id):
     package = CustomPackages.objects.get(id = package_id)
-    package.delete()
+    # package.delete()
+    package.is_done = False
+    package.save()
 
     return HttpResponseRedirect("/custom_packages")
 
@@ -130,7 +138,12 @@ def add_new_flight(request):
 @login_required(login_url="/login")
 def flight_details(request,flight_id):
     flight = Flights.objects.get(id = flight_id)
-    return render(request,"flight_details.html",{"flight":flight})
+    package=  CustomPackages.objects.filter(is_done = False,user_model_extended = request.user.usermodelextended).first()
+
+    if package == None:
+        package = CustomPackages.objects.create(user_model_extended = request.user.usermodelextended)
+
+    return render(request,"flight_details.html",{"flight":flight,"package":package})
 
 @login_required(login_url="/login")
 def activities(request):
@@ -150,7 +163,10 @@ def add_new_activity(request):
 @login_required(login_url= "/login")
 def activity_details(request,activity_id):
     activity = Activities.objects.get(id= activity_id)
-    return render(request,"activity_details.html",{"activity":activity})
+    custom_package = CustomPackages.objects.filter(is_done = False,user_model_extended = request.user.usermodelextended).first()
+    if custom_package == None:
+        custom_package = CustomPackages.objects.create(user_model_extended = request.user.usermodelextended)
+    return render(request,"activity_details.html",{"activity":activity,"package":custom_package})
 
 @login_required(login_url="/login")
 def packages(request):
@@ -238,6 +254,7 @@ def deselect_activity_for_package(request,package_id,activity_id):
 @login_required(login_url="/login")
 def save_package(request,package_id):
     name = request.GET["name"]
+    title = request.GET["title"]
     description = request.GET["desc"]
 
     package = Packages.objects.get(id = package_id)
@@ -250,6 +267,7 @@ def save_package(request,package_id):
         activity_price = activity_price + item.price
 
     package.price = (package.hotel_qty * package.hotel.price) + (package.flight.price * package.flight_qty) + activity_price
+    package.title = title
 
     package.description = description
 
@@ -286,10 +304,10 @@ def add_custom_packages(request,package_id = None):
         return render(request, "add_custom_packages.html", {"hotels":hotels,"flights":flights,"activities":activities,"package":package})
     else:
         package = None
-        if CustomPackages.objects.filter(is_done = False).count() == 0:
+        if CustomPackages.objects.filter(is_done = False,user_model_extended = request.user.usermodelextended).count() == 0:
             CustomPackages.objects.create(user_model_extended = request.user.usermodelextended)
         else:
-            package = CustomPackages.objects.filter(is_done = False).first()
+            package = CustomPackages.objects.filter(is_done = False,user_model_extended = request.user.usermodelextended).first()
             hotels = Hotels.objects.all()
             flights = Flights.objects.all()
             activities = Activities.objects.all()
@@ -303,6 +321,7 @@ def add_custom_packages(request,package_id = None):
 @login_required(login_url="/login")
 def save_custom_package(request,package_id):
     name = request.GET["name"]
+    title = request.GET["title"]
     description = request.GET["desc"]
 
     package = CustomPackages.objects.get(id = package_id)
@@ -315,6 +334,7 @@ def save_custom_package(request,package_id):
         activity_price = activity_price + item.price
 
     package.price = (package.hotel_qty * package.hotel.price) + (package.flight.price * package.flight_qty) + activity_price
+    package.title = title
 
     package.description = description
 
@@ -324,9 +344,10 @@ def save_custom_package(request,package_id):
 
 @login_required(login_url="/login")
 # @permission_required(["add_packages"],login_url= "/login")
-def select_hotel_for_custom_package(request,package_id,hotel_id):
+def select_hotel_for_custom_package(request,package_id = None,hotel_id = None):
     hotel_qty = request.GET["hotel_qty"]
     hotel = Hotels.objects.get(id = hotel_id)
+        
     CustomPackages.objects.filter(id = package_id).update(hotel = hotel,hotel_qty = hotel_qty)
 
     return HttpResponseRedirect("/add_custom_packages/"+str(package_id))

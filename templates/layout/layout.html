@@ -56,7 +56,7 @@
         {% if user.is_authenticated %}
           <nav class="navbar navbar-expand-sm shadow-sm" style = "background-color : #F82D20;color : white">
             <div class="container-fluid d-flex justify-content-between">
-              <a href = "/" style = "text-decoration: none;color : white"><span>Navbar</span></a>
+              <a href = "/" style = "text-decoration: none;color : white"><img src = {% static "logo.png" %} style = "width : 2rem;"/></a>
               <ul class="navbar-nav">
                 <div class="dropdown">
                   <a class="btn border-0 dropdown-toggle text-light" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -67,7 +67,7 @@
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     {% if user.usermodelextended.role.role == 1 %}
                       <li><a class="dropdown-item" href="{% url 'my_orders' %}">Order Requests</a></li>
-                      <li><a class="dropdown-item" href="{% url 'histories' %}">Histories</a></li>
+                      <li><a class="dropdown-item" href="{% url 'histories' %}">Order Histories</a></li>
                       <li><a class="dropdown-item" href="{% url 'user_contacts' %}">User contacts</a></li>
                       <li><a class="dropdown-item" href="{% url 'revenue' %}">Revenues</a></li>
 
@@ -75,7 +75,7 @@
                       <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     {% else %}
                       <li><a class="dropdown-item" href="{% url "my_orders" %}">My Orders</a></li>
-                      <li><a class="dropdown-item" href="{% url "histories" %}">My Histories</a></li>
+                      <li><a class="dropdown-item" href="{% url "histories" %}">My Order Histories</a></li>
                       <li><a class="dropdown-item" href="{% url 'pass_change' %}">Change Password</a></li>
                       <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     {% endif %}
@@ -87,7 +87,7 @@
         {% else %}
           <nav class="navbar navbar-expand-sm shadow-sm" style = "background-color : #F82D20;color : white">
             <div class="container-fluid d-flex justify-content-between">
-              <a href = "/" style = "text-decoration: none;color : white"><span>Navbar</span></a>
+              <a href = "/" style = "text-decoration: none;color : white"><img src = {% static "logo.png" %} style = "width : 2rem;"/></a>
               <ul class="navbar-nav">
                 <li class="nav-item">
                   <a class="nav-link text-light" href="/login">Login</a>

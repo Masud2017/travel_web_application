@@ -170,6 +170,8 @@
     <form action = "{% url 'save_custom_package' package.id %}" method = "GET">
         <h6>Enter the name of package</h6>
         <input type = "text" class ="form-control" name = "name" placeholder = "Enter the name of the package"/>
+        <input type = "text" class ="form-control mt-sm-2" name = "title" placeholder = "Enter the title of the package"/>
+
         <textarea = class = "form-control mt-sm-2" name = "desc" placeholder = "Describe the package"></textarea>
         <input type ="submit" class = "btn mt-sm-4" style = "background-color : #F82D20;color : white" value = "Save">
     </form>
