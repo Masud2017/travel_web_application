@@ -1,20 +1,36 @@
 {% extends "layout/layout.html" %}
 {% block title %}Travel reservation | Homepage{% endblock title %}
 {% block main %}
-
+{% load static %}
 <div class ="d-flex justify-content-center container mt-sm-4">
     <div class="row">
         <div class ="col-sm-6">
           <h2>Histories for pre made package</h2>
           {% for item in histories_order %}
-            <div class="card">
-              <img src="..." class="card-img-top" alt="...">
+            <div class="card text-center mb-sm-2">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <h5 class="card-title">{{item.order.packages.name}}</h5>
+                <p class="card-text">Hotel : 1x - ${{item.order.packages.hotel.price}} USD</p>
+                <p class="card-text">Flight : 1x - ${{item.order.packages.flight.price}} USD</p>
+                <p class="card-text">Activities : {{item.order.packages.activities.count}}x - ${{item.order.packages.activities.price}} USD</p>
               </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+              <div class="card-footer d-flex flex-column text-center">
+                <div class = "p-sm-4" style = "background-color : #F82D20;color :white;">
+                  {% if user.usermodelextended.role.role == 1 %}
+                  {% if item.other_user != None %}
+                    <img src = "{% static item.other_user.usermodelextended.image_url %}"/>
+                  {% endif %}
+                  <h4>{{item.other_user.first_name}}</h4>
+                  {% else %}
+                  {% if item.other_user != None %}
+                    <img src = "{% static item.other_user.usermodelextended.image_url %}"/>
+                  {% endif %}
+                  <h4>{{item.other_user.first_name}}</h4>
+                  {% endif %}
+                </div>
+                <span class ="btn mb-sm-2 btn-secondary text-light">{{item.status}}</span>
+
+                <span class ="btn btn-secondary text-light">{{item.created_at}}</span>
               </div>
             </div>
           {% endfor %}
@@ -24,16 +40,32 @@
         <div class = "col-sm-6">
           <h2>Histories for custom packages</h2>
           {% for item in histories_custom_order %}
-            <div class="card">
-              <img src="..." class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </div>
+          <div class="card text-center mb-sm-2">
+            <div class="card-body">
+              <h5 class="card-title">{{item.custom_order.custom_packages.name}}</h5>
+              <p class="card-text">Hotel : 1x - ${{item.custom_order.custom_packages.hotel.price}} USD</p>
+              <p class="card-text">Flight : 1x - ${{item.custom_order.custom_packages.flight.price}} USD</p>
+              <p class="card-text">Activities : {{item.custom_order.custom_packages.activities.count}}x - ${{item.order.packages.activities.price}} USD</p>
             </div>
+            <div class="card-footer d-flex flex-column text-center">
+              <div class = "p-sm-4" style = "background-color : #F82D20;color :white;">
+                {% if user.usermodelextended.role.role == 1 %}
+                {% if item.other_user != None %}
+                    <img src = "{% static item.other_user.usermodelextended.image_url %}"/>
+                  {% endif %}
+                <h4>{{item.other_user.first_name}}</h4>
+                {% else %}
+                {% if item.other_user != None %}
+                    <img src = "{% static item.other_user.usermodelextended.image_url %}"/>
+                  {% endif %}
+                <h4>{{item.other_user.first_name}}</h4>
+                {% endif %}
+              </div>
+              <span class ="btn mb-sm-2 btn-secondary text-light">{{item.status}}</span>
+
+              <span class ="btn btn-secondary text-light">{{item.created_at}}</span>
+            </div>
+          </div>
           {% endfor %}
 
         </div>

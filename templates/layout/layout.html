@@ -75,7 +75,7 @@
                       <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     {% else %}
                       <li><a class="dropdown-item" href="{% url "my_orders" %}">My Orders</a></li>
-                      <li><a class="dropdown-item" href="#">My Histories</a></li>
+                      <li><a class="dropdown-item" href="{% url "histories" %}">My Histories</a></li>
                       <li><a class="dropdown-item" href="{% url 'pass_change' %}">Change Password</a></li>
                       <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     {% endif %}

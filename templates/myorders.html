@@ -59,7 +59,7 @@
             {% comment %} <p>6 in stock</p> {% endcomment %}
             <p>$ {{item.custom_packages.price}} USD</p>
             {% if user.usermodelextended.role.role == 1 %}
-                <a class ="btn" style = "background-color :#F82D20;color : white" href= "{% url 'refund_package_order' item.id %}">Refund</a>
+                <a class ="btn" style = "background-color :#F82D20;color : white" href= "{% url 'refund_custom_package_order' item.id %}">Refund</a>
                 <a class ="btn" style = "background-color :#F82D20;color : white" href= "{% url 'add_custom_packages' item.custom_packages.id %}">Edit</a>
             {% endif %}
         </div>

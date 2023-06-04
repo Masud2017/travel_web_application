@@ -226,7 +226,7 @@ class HistoriesOrder(models.Model):
     user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE)
     order = models.ForeignKey(OrderPackages,on_delete=models.CASCADE,default = None)
     status = models.CharField(max_length = 255,default = "No description available",null = True, blank = True)
-    other_user = models.ForeignKey(User,on_delete=models.CASCADE,default = None)
+    other_user = models.ForeignKey(User,on_delete=models.CASCADE,default = None,null = True,blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -237,7 +237,7 @@ class HistoriesCustomOrder(models.Model):
     user_model_extended = models.ForeignKey(UserModelExtended,on_delete=models.CASCADE)
     custom_order = models.ForeignKey(OrderCustomPackages,on_delete=models.CASCADE,default = None)
     status = models.CharField(max_length = 255,default = "No description available",null = True, blank = True)
-    other_user = models.ForeignKey(User,on_delete=models.CASCADE,default = None)
+    other_user = models.ForeignKey(User,on_delete=models.CASCADE,default = None,null = True,blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

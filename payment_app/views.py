@@ -2,6 +2,7 @@ from django.shortcuts import render,HttpResponse,HttpResponseRedirect,redirect
 import stripe
 from django.conf import settings
 from auth_app.models import Packages,CustomPackages,OrderPackages,OrderCustomPackages
+from travel_manager_app import util
 
 def checkout_package(request,package_id):
     stripe.api_key = settings.STRIPE_API_KEY
@@ -71,6 +72,8 @@ def checkout_package(request,package_id):
     order.packages = package
     order.payment_id = checkout_session.payment_intent
     order.save()
+
+    util.add_history_order_for_user(request.user.usermodelextended,None,order,"Ordered")
 
     print("Printing the id of payment : "+checkout_session.payment_intent)
     
@@ -146,6 +149,9 @@ def checkout_custom_package(request,package_id):
     order.payment_id = checkout_session.payment_intent
     order.save()
 
+    util.add_history_custom_order_for_user(request.user.usermodelextended,None,order,"Ordered")
+
+
     print("Printing the id of payment : "+checkout_session.payment_intent)
     
     return redirect(checkout_session.url, code=303)
@@ -166,8 +172,10 @@ def refund_package_order(request,order_id):
     flight.stock = flight.stock + order.packages.flight_qty
     flight.save()
 
-    order.delete()
+    order.is_paid = False
+    order.save()
 
+    util.add_history_order_for_agent(request.user.usermodelextended,order.user_model_extended.user,order,"Refunded")
     return HttpResponseRedirect("/")
 
 
@@ -186,6 +194,8 @@ def refund_custom_package_order(request,order_id):
     flight.stock = flight.stock + order.custom_packages.flight_qty
     flight.save()
 
-    order.delete()
+    order.is_paid = False
+    order.save()
 
+    util.add_history_custom_order_for_agent(request.user.usermodelextended,order.user_model_extended.user,order,"Refunded")
     return HttpResponseRedirect("/")
