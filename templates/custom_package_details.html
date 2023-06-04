@@ -4,9 +4,9 @@
 
 <div class = "container p-4">
         
-    {% if 'auth_app.change_hotels' in perms %}
+    {% if 'auth_app.add_custompackages' in perms %}
     <div class ="d-flex gap-4 mb-sm-4">
-        <a href = "{% url 'delete_package' package.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
+        <a href = "{% url 'delete_custom_package' package.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
     </div>
     {% endif %} 
 
