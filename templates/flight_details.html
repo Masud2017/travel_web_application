@@ -7,7 +7,7 @@
         <div name = "details" class = "p-sm-4">
             {% if 'auth_app.delete_flights' in perms %}
                 <div class ="d-flex gap-4 mb-sm-4">
-                    <a href = "#" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
+                    <a href = "{% url "edit_flight" flight.id %}" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
                     <a href = "{% url 'delete_flight' flight.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
                 </div>
             {% endif %}
@@ -16,8 +16,6 @@
             <p>
                 {{flight.description}}
             </p>
-            <h4>Address</h4>
-            <p>407/1 kollyanpur south paikpara sp roa, mirpur 1, dhaka 1216</p>
         
             <div>
                 <h6 style = "color : #F82D20" class = "mt-sm-5">Flight from : {{flight.from_dst}}</h6>

@@ -7,7 +7,6 @@
         
     {% if 'auth_app.change_hotels' in perms %}
     <div class ="d-flex gap-4 mb-sm-4">
-        <a href = "#" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
         <a href = "{% url 'delete_package' package.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
     </div>
     {% endif %} 
@@ -29,7 +28,7 @@
     <p class="card-text text-center">{{package.hotel.title}}</p>
     </div>
     <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
-    <p>Left {{package.hotel.stock}} rooms</p>
+    <p>Qty {{package.hotel_qty}}</p>
     <p>${{package.hotel.price}} USD</p>
     </div>
     </div>
@@ -55,7 +54,7 @@
                     <h6 style= "color :#F82D20">Stock : {{item.stock}}</h6>
                     <h6 style= "color :#F82D20">Price : {{item.price}}</h6>
                 </div>
-                <form action = "{% url 'select_hotel_for_custom_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
+                <form action = "{% url 'select_hotel_for_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
                     <div>Qty<input type = "number" style = "width: 2rem" value = "1" name = "hotel_qty"/></div>
                     <input type ="submit"  class ="btn" style ="background-color : #F82D20;color : white" onclick = "selectHotel('{{item.id}}','{{item.name}}','{{item.title}}','{{item.price}}','4','{{item.product_image_url}}')" value = "Submit">
                 </form>
@@ -80,7 +79,7 @@
     <p class="card-text text-center">{{package.flight.title}}</p>
     </div>
     <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
-    <p>Left {{package.flight.stock}} seats</p>
+    <p>Qty {{package.flight_qty}}</p>
     <p>${{package.flight.price}} USD</p>
     </div>
     </div>
@@ -106,7 +105,7 @@
                     <h6 style= "color :#F82D20">Stock : {{item.stock}}</h6>
                     <h6 style= "color :#F82D20">Price : {{item.price}}</h6>
                 </div>
-                <form action = "{% url 'select_flight_for_custom_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
+                <form action = "{% url 'select_flight_for_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
                     <div>Qty<input type = "number" style = "width: 2rem" value = "1" name = "flight_qty"/></div>
                     <input type ="submit"  class ="btn" style ="background-color : #F82D20;color : white" onclick = "selectHotel('{{item.id}}','{{item.name}}','{{item.title}}','{{item.price}}','4','{{item.product_image_url}}')" value = "Submit">
                 </form>
@@ -145,7 +144,7 @@
                     <h6 style= "color :#F82D20">Stock : {{item.stock}}</h6>
                     <h6 style= "color :#F82D20">Price : {{item.price}}</h6>
                 </div>
-                <form action = "{% url 'select_activity_for_custom_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
+                <form action = "{% url 'select_activity_for_package' package.id item.id %}" method = "GET" class = "d-flex align-items-center justify-content-between" style = "width : 100%">
                     {% comment %} <div>Qty<input type = "number" style = "width: 2rem" value = "1" name = "flight_qty"/></div> {% endcomment %}
                     <input type ="submit"  class ="btn" style ="background-color : #F82D20;color : white" onclick = "selectHotel('{{item.id}}','{{item.name}}','{{item.title}}','{{item.price}}','4','{{item.product_image_url}}')" value = "Submit">
                 </form>
@@ -167,11 +166,10 @@
         <p class="card-text text-center">{{item.title}}</p>
         </div>
         <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
-            <p>Left {{item.stock}} seats</p>
             <p>${{item.price}} USD</p>
         </div>
         <div class = "card-footer d-flex justify-content-center">
-            <a class = "btn" style = "background-color : #F82D20;color : white" href = "{% url 'deselect_activity_for_custom_package' package.id item.id %}">
+            <a class = "btn" style = "background-color : #F82D20;color : white" href = "{% url 'deselect_activity_for_package' package.id item.id %}">
                 Remove
             </a>
         </div>

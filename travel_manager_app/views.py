@@ -156,8 +156,11 @@ def add_activities(request):
 @login_required(login_url="/login")
 def add_new_activity(request):
     name = request.GET["name"]
+    description = request.GET["description"]
+    image = request.GET["image"]
+    price = request.GET["price"]
 
-    Activities.objects.create()
+    Activities.objects.create(user_model_exnteded = request.user.usermodelextended,name = name, description = description,product_image_url = image,price = price)
     return HttpResponseRedirect("/activities")
 
 @login_required(login_url= "/login")
@@ -176,7 +179,12 @@ def packages(request):
 @login_required(login_url= "/login")
 def package_details(request,package_id):
     package = Packages.objects.get(id = package_id)
-    return render(request, "package_details.html",{"package":package})
+
+    hotels = Hotels.objects.all()
+    flights = Flights.objects.all()
+    activities = Activities.objects.all()
+
+    return render(request, "package_details.html",{"package":package,"hotels":hotels,"flights":flights,"activities":activities})
 
 @login_required(login_url="/login")
 # @permission_required(["auth_app.add_packages"],login_url= "/login")
@@ -390,7 +398,12 @@ def deselect_activity_for_custom_package(request,package_id,activity_id):
 @permission_required(["auth_app.view_custompackages"],login_url="/login")
 def custom_packages_details(request,package_id):
     custom_package = CustomPackages.objects.get(id = package_id)
-    return render(request,"custom_package_details.html", {"package":custom_package})
+
+    hotels = Hotels.objects.all()
+    flights = Flights.objects.all()
+    activities = Activities.objects.all()
+
+    return render(request,"custom_package_details.html", {"package":custom_package, "hotels":hotels,"flights":flights,"activities":activities})
 
 
 
@@ -549,3 +562,92 @@ def search_custom_package(request):
     search_query = request.GET["query"]
     custom_packages = CustomPackages.objects.filter(name = search_query)
     return render(request, "custom_packages.html", {"packages":custom_packages})
+
+@login_required(login_url= "/login")
+def edit_hotel(request,hotel_id):
+    hotel = Hotels.objects.get(id = hotel_id)
+    return render(request,"edit_hotel.html", {"hotel":hotel})
+
+@login_required(login_url= "/login")
+def edit_flight(request,flight_id):
+    flight = Flights.objects.get(id = flight_id)
+    return render(request,"edit_flight.html", {"flight":flight})
+
+@login_required(login_url= "/login")
+def edit_activity(request,activity_id):
+    activity = Activities.objects.get(id = activity_id)
+    return render(request,"edit_activity.html", {"activity":activity})
+
+@login_required(login_url="/login")
+def edit_hotel_with_data(request,hotel_id):
+    hotel_name = request.GET["name"]
+    room_size = request.GET["size"]
+    room_count = request.GET["count"]
+    product_image = request.GET["image"]
+    description = request.GET["description"]
+    title = request.GET["title"]
+    price = request.GET["price"]
+    stock = request.GET["stock"]
+    address = request.GET["address"]
+
+    hotel = Hotels.objects.get(id = hotel_id)
+
+    hotel.name = hotel_name
+    hotel.room_size = room_size
+    hotel.room_count = room_count
+    hotel.product_image_url = product_image
+    hotel.description = description
+    hotel.title = title
+    hotel.price = price
+    hotel.stock = stock
+    hotel.address = address
+    
+    hotel.save()
+
+    return HttpResponseRedirect("/")
+
+@login_required(login_url="/login")
+def edit_flight_with_data(request,flight_id):
+    name = request.GET["name"]
+    flight_from = request.GET["from"]
+    flight_to = request.GET["to"]
+    travel_date = request.GET["travel_date"]
+    title = request.GET["title"]
+    flight_image = request.GET["image"]
+    price = request.GET["price"]
+    stock = request.GET["stock"]
+    description = request.GET["description"]
+
+    flight = Flights.objects.get(id = flight_id)
+
+    flight.name = name
+    flight.from_dst = flight_from
+    flight.to_dst = flight_to
+    flight.travel_date = travel_date
+    flight.title = title
+    flight.product_image_url = flight_image
+    flight.price = price
+    flight.stock = stock
+    flight.description = description
+
+    flight.save()
+
+    return HttpResponseRedirect("/flights")
+
+@login_required(login_url="/login")
+def edit_activity_with_data(request,activity_id):
+    name = request.GET["name"]
+    description = request.GET["description"]
+    image = request.GET["image"]
+    price = request.GET["price"]
+
+    activity = Activities.objects.get(id = activity_id)
+
+    activity.name = name
+    activity.description = description
+    activity.product_image_url = image
+    activity.price = price
+
+    activity.save()
+
+    return HttpResponseRedirect("/activities")

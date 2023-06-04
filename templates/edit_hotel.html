@@ -1,0 +1,27 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+
+<div class = "d-flex justify-content-center align-items-center" style = "height : 100vh">
+    <form style = "width : 20rem;padding: 2rem;" class = "shadow" method = "get" action = "{% url 'edit_hotel_with_data' hotel.id %}">
+        {% csrf_token %}
+        <input type = "text" class = "form-control mb-sm-2" placeholder = "Enter product name" name= "name" value = "{{hotel.name}}"/>
+        Enter the hotel room size <br>
+        <input type = "number" class = "form-control mb-sm-2 mt-sm-2" name= "size" value = "{{hotel.room_size}}"/>
+        Enter the hotel room count <br>
+        <input type = "number" class = "form-control mt-sm-2" name= "count" value = "{{hotel.room_count}}"/>
+        <input type = "text" class = "form-control mt-sm-2" placeholder = "Enter hotel image" name= "image" value = "{{hotel.product_image_url}}"/>
+        <textarea class = "form-control mt-sm-2" placeholder = "Enter hotel description" name= "description">{{hotel.description}}</textarea>
+        <input type = "text" class = "mb-sm-2 form-control mt-sm-2" placeholder = "Enter product title" name= "title" value = "{{hotel.title}}"/>
+        Enter hotel price<br>
+        <input type = "number" class = "form-control mt-sm-2 mb-sm-2" name= "price" value = "{{hotel.price}}"/>
+        Enter the hotel room stock <br>
+        <input type = "number" class = "form-control mt-sm-2" name= "stock" value = "{{hotel.stock}}"/>
+        <input type = "text" placeholder = "Enter hotel address" class = "form-control mt-sm-2" name= "address" value= "{{hotel.address}}"/>
+
+
+        <input type = "submit" value = "Edit hotel" class ="btn mt-sm-4" style = "background-color: #F82D20;color : white"/>
+    </form>
+</div>
+
+{% endblock main %}

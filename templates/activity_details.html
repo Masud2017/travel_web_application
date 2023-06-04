@@ -7,7 +7,7 @@
         <div name = "details" class = "p-sm-4">
             {% if 'auth_app.delete_activities' in perms %}
                 <div class ="d-flex gap-4 mb-sm-4">
-                    <a href = "#" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
+                    <a href = "{% url "edit_activity" activity.id %}" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
                     <a href = "{% url 'delete_activity' activity.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
                 </div>
             {% endif %}
@@ -23,7 +23,6 @@
                 {% comment %} <h6 style = "color : #F82D20" class = "mt-sm-5">Flight from : {{activity.from_dst}}</h6>
                 <h6 style = "color : #F82D20">Flight to : {{flight.to_dst}}</h6> {% endcomment %}
                 
-                <h6 style = "color : #F82D20">Stock : {{activity.stock}}</h6>
                 <h6 style = "color : #F82D20">Price : ${{activity.price}} USD</h6>
             </div>
         

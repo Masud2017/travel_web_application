@@ -1,0 +1,24 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+
+<div class = "d-flex justify-content-center align-items-center" style = "height : 100vh">
+    <form style = "width : 20rem;padding: 2rem;" class = "shadow" method = "get" action = "{% url 'edit_flight_with_data' flight.id %}">
+        {% csrf_token %}
+        <input type = "text" class = "form-control" placeholder = "Enter product name" name= "name" value ="{{flight.name}}"/>
+        <input type = "text" class = "form-control mt-sm-2" name= "from" placeholder = "Enter the place you starting from" value = "{{flight.from_dst}}"/>
+        <input type = "text" class = "form-control mt-sm-2" name= "to" placeholder = "Enter the destination place" value = "{{flight.to_dst}}"/>
+        <input type = "date" class = "form-control mt-sm-2" name= "travel_date" value = "{{flight.travel_date}}" />
+        <input type = "text" class = "form-control mt-sm-2" placeholder = "Enter product title" name= "title" value ="{{flight.title}}"/>
+        <input type = "text" class = "form-control mb-sm-2 mt-sm-2" placeholder = "Enter flight image" name= "image" value = "{{flight.product_image_url}}"/>
+        Enter the flight price <br>
+        <input type = "number" class = "form-control mb-sm-2 mt-sm-2" name= "price" value = "{{flight.price}}"/>
+        Enter the flight stock<br>
+        <input type = "number" class = "form-control mt-sm-2" name= "stock" value = "{{flight.stock}}"/>
+        <textarea class = "form-control mt-sm-2" placeholder = "Enter hotel description" name= "description">{{flight.description}}</textarea>
+
+        <input type = "submit" value = "Edit flight" class ="btn mt-sm-4" style = "background-color: #F82D20;color : white"/>
+    </form>
+</div>
+
+{% endblock main %}

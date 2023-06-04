@@ -1,0 +1,18 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+
+<div class = "d-flex justify-content-center align-items-center" style = "height : 100vh">
+    <form style = "width : 20rem;padding: 2rem;" class = "shadow" method = "get" action = "{% url 'edit_activity_with_data' activity.id %}">
+        {% csrf_token %}
+        <input type = "text" class = "form-control" placeholder = "Enter product name" name= "name" value = "{{activity.name}}" />
+        <textarea class = "form-control mt-sm-2" placeholder = "Enter hotel description" name= "description">{{activity.description}}</textarea>
+        <input type = "text" class = "form-control mb-sm-2 mt-sm-2" placeholder = "Enter hotel image" name= "image" value = "{{activity.product_image_url}}"/>
+        Enter the activity price <br>
+        <input type = "number" class = "form-control mt-sm-2" name= "price" value = "{{activity.price}}"/>
+
+        <input type = "submit" value = "Edit Activity" class ="btn mt-sm-4" style = "background-color: #F82D20;color : white"/>
+    </form>
+</div>
+
+{% endblock main %}

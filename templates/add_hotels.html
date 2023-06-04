@@ -5,13 +5,17 @@
 <div class = "d-flex justify-content-center align-items-center" style = "height : 100vh">
     <form style = "width : 20rem;padding: 2rem;" class = "shadow" method = "get" action = "{% url 'add_new_hotel' %}">
         {% csrf_token %}
-        <input type = "text" class = "form-control" placeholder = "Enter product name" name= "name"/>
-        <input type = "number" class = "form-control mt-sm-2" name= "size"/>
+        <input type = "text" class = "form-control mb-sm-2" placeholder = "Enter product name" name= "name"/>
+        Enter the room size <br>
+        <input type = "number" class = "form-control mt-sm-2 mb-sm-2" name= "size"/>
+        Enter the room count <br>
         <input type = "number" class = "form-control mt-sm-2" name= "count"/>
         <input type = "text" class = "form-control mt-sm-2" placeholder = "Enter hotel image" name= "image"/>
         <textarea class = "form-control mt-sm-2" placeholder = "Enter hotel description" name= "description"></textarea>
-        <input type = "text" class = "form-control mt-sm-2" placeholder = "Enter product title" name= "title"/>
-        <input type = "number" class = "form-control mt-sm-2" name= "price"/>
+        <input type = "text" class = "form-control mt-sm-2 mb-sm-2" placeholder = "Enter product title" name= "title"/>
+        Enter the hotel price <br>
+        <input type = "number" class = "form-control mt-sm-2 mb-sm-2" name= "price"/>
+        Enter the hotel room stock <br>
         <input type = "number" class = "form-control mt-sm-2" name= "stock"/>
         <input type = "text" placeholder = "Enter hotel address" class = "form-control mt-sm-2" name= "address"/>
 

@@ -6,16 +6,12 @@
     <form style = "width : 20rem;padding: 2rem;" class = "shadow" method = "get" action = "{% url 'add_new_activity' %}">
         {% csrf_token %}
         <input type = "text" class = "form-control" placeholder = "Enter product name" name= "name"/>
-        <input type = "text" class = "form-control mt-sm-2" name= "from" placeholder = "Enter the place you starting from"/>
-        <input type = "text" class = "form-control mt-sm-2" name= "to" placeholder = "Enter the destination place"/>
-        <input type = "date" class = "form-control mt-sm-2" name= "travel_date" />
-        <input type = "text" class = "form-control mt-sm-2" placeholder = "Enter product title" name= "title"/>
-        <input type = "text" class = "form-control mt-sm-2" placeholder = "Enter hotel image" name= "image"/>
-        <input type = "number" class = "form-control mt-sm-2" name= "price"/>
-        <input type = "number" class = "form-control mt-sm-2" name= "stock"/>
         <textarea class = "form-control mt-sm-2" placeholder = "Enter hotel description" name= "description"></textarea>
+        <input type = "text" class = "form-control mb-sm-2 mt-sm-2" placeholder = "Enter hotel image" name= "image"/>
+        Enter the activity price <br>
+        <input type = "number" class = "form-control mt-sm-2" name= "price"/>
 
-        <input type = "submit" value = "Add flight" class ="btn mt-sm-4" style = "background-color: #F82D20;color : white"/>
+        <input type = "submit" value = "Add Activity" class ="btn mt-sm-4" style = "background-color: #F82D20;color : white"/>
     </form>
 </div>
 

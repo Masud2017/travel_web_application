@@ -6,7 +6,6 @@
         
     {% if 'auth_app.change_hotels' in perms %}
     <div class ="d-flex gap-4 mb-sm-4">
-        <a href = "#" class = "btn" style = "background-color: #F82D20;color : white">Edit</a>
         <a href = "{% url 'delete_package' package.id %}" class = "btn" style = "background-color: #F82D20; color : white">Delete</a>
     </div>
     {% endif %} 
@@ -29,7 +28,7 @@
     <p class="card-text text-center">{{package.hotel.title}}</p>
     </div>
     <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
-    <p>Left {{package.hotel.stock}} rooms</p>
+    <p>Qty : {{package.hotel_qty}}</p>
     <p>${{package.hotel.price}} USD</p>
     </div>
     </div>
@@ -80,7 +79,8 @@
     <p class="card-text text-center">{{package.flight.title}}</p>
     </div>
     <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
-    <p>Left {{package.flight.stock}} seats</p>
+    <p>Qty : {{package.flight_qty}}</p>
+
     <p>${{package.flight.price}} USD</p>
     </div>
     </div>
@@ -167,7 +167,6 @@
         <p class="card-text text-center">{{item.title}}</p>
         </div>
         <div class = "card-footer text-center p-sm-2" style = "color :#F82D20">
-            <p>Left {{item.stock}} seats</p>
             <p>${{item.price}} USD</p>
         </div>
         <div class = "card-footer d-flex justify-content-center">

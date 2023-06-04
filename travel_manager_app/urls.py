@@ -68,6 +68,15 @@ urlpatterns = [
     path('search_package',views.search_package,name = 'search_package'),
     path('search_custom_package',views.search_custom_package,name = 'search_custom_package'),
 
+
+    path('edit_hotel/<int:hotel_id>',views.edit_hotel,name = 'edit_hotel'),
+    path('edit_flight/<int:flight_id>',views.edit_flight,name = 'edit_flight'),
+    path('edit_activity/<int:activity_id>',views.edit_activity,name = 'edit_activity'),
+
+
+    path('edit_hotel_with_data/<int:hotel_id>',views.edit_hotel_with_data,name = 'edit_hotel_with_data'),
+    path('edit_flight_with_data/<int:flight_id>',views.edit_flight_with_data,name = 'edit_flight_with_data'),
+    path('edit_activity_with_data/<int:activity_id>',views.edit_activity_with_data,name = 'edit_activity_with_data'),
 ]
 
 
