@@ -18,6 +18,12 @@
         <input type = "email" placeholder="Enter your user name" class = "form-control" name = "username"/>
         <input type = "password" placeholder="Enter your password" class = "form-control mt-sm-2" name = "password"/>
         <input type = "submit" class = "btn btn-danger mt-sm-4 form-control" style = "background-color : #F82D20" value= "Login"/>
+        
+        <div class = "d-flex flex-column mt-sm-4">
+            <a href = "{% url "signup" %}">Don't have an account ?</a>
+            <a href = "{% url "pass_forgot" %}">Forget password ?</a>
+
+        </div>
     </form>
 </div>
 

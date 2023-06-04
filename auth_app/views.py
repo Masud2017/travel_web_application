@@ -97,18 +97,61 @@ def perform_logout(request):
 
 
 def forget_password(request):
+    from base64 import b64encode
+    
     email = request.GET["email"]
 
     import datetime
-    print(datetime.datetime.now().microsecond) 
+    time = datetime.datetime.now() + datetime.timedelta(minutes=5)
+    time_bytes = time.isoformat().encode("ascii")
 
-@login_required(login_url= "/login")
+    user = User.objects.get(email = email)
+    user_model = user.usermodelextended
+    user_model.forget_password_token = b64encode(time_bytes)
+    user_model.save()
+
+    decoded_time = user_model.forget_password_token.decode("ascii")
+    print(decoded_time)
+
+    return HttpResponseRedirect("/send_notification/"+email+"?msg=Hello, "+user.first_name+"<br>Use this link to change your password : http://localhost:8000/check_forget_password_token/"+email+"/"+decoded_time)
+
+def check_forget_password_token(request,email,token):
+    from base64 import b64decode
+    import datetime
+    time = b64decode(token)
+
+
+    time_obj = datetime.datetime.fromisoformat(time.decode("ascii"))
+    
+
+    current_time = datetime.datetime.now()
+    if (current_time > time_obj):
+        return HttpResponse("Your password token is expired please request for forget password again !")
+
+    
+    else:
+        return render(request,"change_password.html", {"email":email})
+    # if (current_time.microsecond > time.microsecond):
+    #     return HttpResponse("expired")
+    
+
 def change_password(request):
     password = request.POST["password"]
-    email = request.user.email
-
+    repassword = request.POST["repassword"]
+    email = request.POST["email"]
+    if password != repassword:
+        return HttpResponse("Password is not matched !!")
+        
     user =User.objects.get(email = email)
     user.set_password(password)
     user.save()
 
     return HttpResponseRedirect("/")
+
+def pass_forgot(request):
+    return render(request,"pass_forgot.html")
+
+def pass_change(request):
+    email = request.user.email
+
+    return render(request,"change_password.html",{"email":email})

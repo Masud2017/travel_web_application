@@ -1,0 +1,15 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+<div class ="d-flex justify-content-center align-items-center" style = "height : 100vh">
+    <form action = "{% url "forget_password" %}" method = "get">
+        {% csrf_token %}
+        
+
+        <input type = "email" class = "form-control" name = "email" placeholder= "Enter your email address"/>
+        
+        <input type = "submit" class = "form-control btn btn-danger mt-sm-4" value ="Forgot password"/>
+
+    </form>
+</div>
+{% endblock %}

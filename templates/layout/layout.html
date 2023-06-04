@@ -71,12 +71,12 @@
                       <li><a class="dropdown-item" href="{% url 'user_contacts' %}">User contacts</a></li>
                       <li><a class="dropdown-item" href="{% url 'revenue' %}">Revenues</a></li>
 
-                      <li><a class="dropdown-item" href="#">Setting</a></li>
+                      <li><a class="dropdown-item" href="{% url 'pass_change' %}">Change Password</a></li>
                       <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     {% else %}
                       <li><a class="dropdown-item" href="{% url "my_orders" %}">My Orders</a></li>
                       <li><a class="dropdown-item" href="#">My Histories</a></li>
-                      <li><a class="dropdown-item" href="#">Setting</a></li>
+                      <li><a class="dropdown-item" href="{% url 'pass_change' %}">Change Password</a></li>
                       <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     {% endif %}
                   </ul>

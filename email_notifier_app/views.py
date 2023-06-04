@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 
 # Create your views here.
-@login_required(login_url = "/login")
 def send_notification(request,email):
     message = request.GET["msg"]
     send_mail(
