@@ -81,6 +81,8 @@ class UserModelExtended(models.Model):
 
     image_url = models.CharField(max_length=100,default = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png")
 
+    forget_password_token = models.TextField(max_length=500,default = None,blank = True,null = True)
+
     class Meta:
         verbose_name_plural = "UserModelExtended"
         permissions = (
@@ -183,7 +185,7 @@ class OrderPackages(models.Model):
     is_paid =  models.BooleanField(default = False)
     payment_id = models.CharField(max_length=200,default = None, null= True,blank = True) # this will be used to issue refund if needed
 
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    created_at = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
         verbose_name_plural = "OrderPackage"
@@ -196,7 +198,7 @@ class OrderCustomPackages(models.Model):
     is_paid =  models.BooleanField(default = False)
     payment_id = models.CharField(max_length=200,default = None, null= True,blank = True) # this will be used to issue refund if needed
 
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    created_at = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
         verbose_name_plural = "OrderCustomPackage"

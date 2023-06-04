@@ -13,6 +13,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 
         <title>
@@ -66,6 +68,9 @@
                     {% if user.usermodelextended.role.role == 1 %}
                       <li><a class="dropdown-item" href="{% url 'my_orders' %}">Order Requests</a></li>
                       <li><a class="dropdown-item" href="{% url 'histories' %}">Histories</a></li>
+                      <li><a class="dropdown-item" href="{% url 'user_contacts' %}">User contacts</a></li>
+                      <li><a class="dropdown-item" href="{% url 'revenue' %}">Revenues</a></li>
+
                       <li><a class="dropdown-item" href="#">Setting</a></li>
                       <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     {% else %}

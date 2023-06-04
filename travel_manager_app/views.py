@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.contrib.auth.decorators import permission_required,login_required
-from auth_app.models import Hotels,Flights,Activities,Packages,CustomPackages,OrderCustomPackages,OrderPackages,HistoriesOrder,HistoriesCustomOrder
+from auth_app.models import Hotels,Flights,Activities,Packages,CustomPackages,OrderCustomPackages,OrderPackages,HistoriesOrder,HistoriesCustomOrder,Roles
 from django.contrib.auth.models import User
 from .services.ProductHandler import ProductHandler
 from . import util
@@ -476,3 +476,55 @@ def histories(request):
     histories_order = HistoriesOrder.objects.filter(user_model_extended = request.user.usermodelextended)
     histories_custom_order = HistoriesCustomOrder.objects.filter(user_model_extended = request.user.usermodelextended)
     return render(request, "histories.html", {"histories_order":histories_order, "histories_custom_order":histories_custom_order})
+
+
+@login_required(login_url="/login")
+def user_contacts(request):
+    users = User.objects.all()
+
+    return render(request,"user_contacts.html", {"users":users})
+
+
+@login_required(login_url="/login")
+def revenue(request):
+    order_pre_made = OrderPackages.objects.all().order_by("-created_at")
+    order_custom = OrderCustomPackages.objects.all().order_by("-created_at")
+    total_revenue = 0
+    for item in order_pre_made:
+        total_revenue = total_revenue + item.packages.price
+    for item in order_custom:
+        total_revenue = total_revenue + item.custom_packages.price
+
+    revenue_month = util.get_revenue_per_month()
+    revenue_daily = util.get_revenue_daily()
+    return render(request,"revenue.html",{"total_revenue":total_revenue,"order_pre_made":order_pre_made,"order_custom":order_custom,"revenue_month":revenue_month, "revenue_daily":revenue_daily})
+
+@login_required(login_url= "/login")
+def search_hotel(request):
+    search_query = request.GET["query"]
+    hotels = Hotels.objects.filter(name = search_query)
+    return render(request, "homepage.html", {"hotels":hotels})
+
+@login_required(login_url= "/login")
+def search_flight(request):
+    search_query = request.GET["query"]
+    flights = Flights.objects.filter(name = search_query)
+    return render(request, "flights.html", {"flights":flights})
+
+@login_required(login_url= "/login")
+def search_activity(request):
+    search_query = request.GET["query"]
+    activities = Activities.objects.filter(name = search_query)
+    return render(request, "activities.html", {"activities":activities})
+
+@login_required(login_url= "/login")
+def search_package(request):
+    search_query = request.GET["query"]
+    packages = Packages.objects.filter(name = search_query)
+    return render(request, "packages.html", {"packages":packages})
+
+@login_required(login_url= "/login")
+def search_custom_package(request):
+    search_query = request.GET["query"]
+    custom_packages = CustomPackages.objects.filter(name = search_query)
+    return render(request, "custom_packages.html", {"packages":custom_packages})

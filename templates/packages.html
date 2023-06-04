@@ -4,8 +4,8 @@
 
 <div name = "agent_section">
     <div class ="d-flex flex-column align-items-center">
-        <form class = "d-flex gap-4 mt-sm-5" style = "width: 50rem">
-            <input type = "text" class = "form-control" placeholder = "Search flights"/>
+        <form action = "{% url "search_package" %}" class = "d-flex gap-4 mt-sm-5" style = "width: 50rem">
+            <input type = "text" class = "form-control" placeholder = "Search flights" name ="query"/>
             <input type = "submit" class ='btn' style = "background-color : #F82D20;color : white" value= "Search"/>
         </form>
 

@@ -1,0 +1,25 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Login{% endblock title %}
+{% block main %}
+{% load static %}
+<div class = "d-flex flex-column container mt-sm-5" style ="width : 100%">
+    {% for item in users %}
+    {% if item.usermodelextended.role.role == 0 %}
+        <div class = "mt-sm-2 p-sm-2 d-flex align-items-center gap-5" style ="height : 10rem;background-color : #F82D20;color : white" class = "d-flex">
+            <img src = "{% static item.usermodelextended.image_url %}" alt = "something went wrong"/>
+            <div>
+                <h4>Name: {{item.first_name}}</h4>
+                <h6>Email : {{item.email}}</h6>
+            </div>
+            <div style ="width : 100%">
+                <form action = "{% url 'send_notification' item.email %}" method = "GET" class ="d-flex gap-2">
+                    <textarea placeholder = "Enter your message" class ="form-control" name ="msg"></textarea>
+                    <input type = "submit" class ="btn btn-success" value = "Send notification"/>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock main %}

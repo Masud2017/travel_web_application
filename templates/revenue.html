@@ -1,0 +1,84 @@
+{% extends "layout/layout.html" %}
+{% block title %}Travel reservation | Homepage{% endblock title %}
+{% block main %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById('daily');
+  
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Pre_Made Package', 'Custom Package'],
+        datasets: [{
+          label: 'revenue per day',
+          data: [{{revenue_daily.pre_made_daily}},{{revenue_daily.custom_daily}}],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+
+    const ctx2 = document.getElementById('monthly');
+  
+    const chart2 = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Pre_Made Package', 'Custom Package'],
+        datasets: [{
+          label: 'revenue per month',
+          data: [{{revenue_month.pre_made_month}},{{revenue_month.custom_month}}],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+});
+  </script>
+ 
+  <div class = "d-flex flex-column align-items-center mt-sm-5">
+    <div class ="row container">
+        <div class = "col-sm-6">
+            <h2>Daily Revenue Statistics</h2>
+            <canvas id="daily" style="width:25rem;max-width:25rem;height : 25rem;max-height : 25rem"></canvas>
+        </div>
+    
+        <div class = "col-sm-6">
+            <h2>Monthly Revenue Statistics</h2>
+            <canvas id="monthly" style="width:25rem;max-width:25rem;height : 25rem;max-height : 25rem"></canvas>
+        </div>
+      </div>
+
+      <h1 class = "text-center mt-sm-4">Report for pre made package orders</h1>
+      <table class = "table container">
+        <tr><th>Package Type</th><th>Price</th><th>Date</th></tr>
+        {% for item in order_pre_made %}
+            <tr><td>Pre made package</td><td>${{item.packages.price}} USD</td><td>{{item.created_at}}</td></tr>
+        {% endfor %}
+      </table>
+      <h1 class = "text-center mt-sm-4">Report for Custom package orders</h1>
+      <table class = "table container mt-sm-2">
+        <tr><th>Package Type</th><th>Price</th><th>Date</th></tr>
+        {% for item in order_custom %}
+            <tr><td>Custom package</td><td>${{item.custom_packages.price}} USD</td><td>{{item.created_at}}</td></tr>
+        {% endfor %}
+      </table>
+      <h3>Total : revenue : ${{total_revenue}} USD</h3>
+  </div>
+
+
+{% endblock main %}
+

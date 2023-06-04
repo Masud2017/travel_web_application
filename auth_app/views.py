@@ -94,3 +94,21 @@ def authentication(request):
 def perform_logout(request):
     logout(request)
     return redirect("/login")
+
+
+def forget_password(request):
+    email = request.GET["email"]
+
+    import datetime
+    print(datetime.datetime.now().microsecond) 
+
+@login_required(login_url= "/login")
+def change_password(request):
+    password = request.POST["password"]
+    email = request.user.email
+
+    user =User.objects.get(email = email)
+    user.set_password(password)
+    user.save()
+
+    return HttpResponseRedirect("/")

@@ -57,6 +57,17 @@ urlpatterns = [
     path('add_history/<slug:status>/<int:order_id>',views.add_history,name = 'add_history'),
     path('add_custom_history/<str:status>/<int:order_id>/<int:other_user_id>',views.add_custom_history,name = 'add_custom_history'),
     path('add_custom_history/<str:status>/<int:order_id>',views.add_custom_history,name = 'add_custom_history'),
+
+
+    path('user_contacts',views.user_contacts,name = 'user_contacts'),
+    path('revenue',views.revenue,name = 'revenue'),
+
+    path('search_hotel',views.search_hotel,name = 'search_hotel'),
+    path('search_flight',views.search_flight,name = 'search_flight'),
+    path('search_activity',views.search_activity,name = 'search_activity'),
+    path('search_package',views.search_package,name = 'search_package'),
+    path('search_custom_package',views.search_custom_package,name = 'search_custom_package'),
+
 ]
 
 
